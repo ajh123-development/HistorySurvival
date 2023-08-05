@@ -1,9 +1,9 @@
-package tk.minersonline.HistorySurvival.glfw.listener;
+package tk.minersonline.Minecart.glfw.listener;
 
-import tk.minersonline.HistorySurvival.glfw.Window;
+import tk.minersonline.Minecart.glfw.Window;
 import org.lwjgl.glfw.GLFWWindowSizeCallbackI;
 
-import static tk.minersonline.HistorySurvival.geometry.configuration.World.setCoordinatePlane;
+import static tk.minersonline.Minecart.geometry.configuration.World.setCoordinatePlane;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowAspectRatio;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_PROJECTION;

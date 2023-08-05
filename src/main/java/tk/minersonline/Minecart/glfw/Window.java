@@ -1,14 +1,14 @@
-package tk.minersonline.HistorySurvival.glfw;
+package tk.minersonline.Minecart.glfw;
 
-import tk.minersonline.HistorySurvival.glfw.listener.KeyListener;
-import tk.minersonline.HistorySurvival.glfw.listener.WindowResizeListener;
+import tk.minersonline.Minecart.glfw.listener.KeyListener;
+import tk.minersonline.Minecart.glfw.listener.WindowResizeListener;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
-import tk.minersonline.HistorySurvival.util.Color;
+import tk.minersonline.Minecart.util.Color;
 
 import java.util.Objects;
 
-import static tk.minersonline.HistorySurvival.geometry.configuration.World.setCoordinatePlane;
+import static tk.minersonline.Minecart.geometry.configuration.World.setCoordinatePlane;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
@@ -41,7 +41,7 @@ import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 import static org.lwjgl.system.MemoryUtil.NULL;
-import static tk.minersonline.HistorySurvival.util.Color.WHITE;
+import static tk.minersonline.Minecart.util.Color.WHITE;
 
 public class Window {
     private int width;
@@ -161,7 +161,7 @@ public class Window {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
-        // tk.minersonline.HistorySurvival.glfw window Configuration
+        // tk.minersonline.Minecart.glfw window Configuration
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwSetWindowSizeLimits(windowAddress, MIN_WIDTH, MIN_HEIGHT, MAX_WIDTH, MAX_HEIGHT);

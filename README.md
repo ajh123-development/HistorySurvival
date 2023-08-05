@@ -54,7 +54,7 @@ This repository is divided into the following:
 _Class with the main method:_
 
 ``` java
-import tk.minersonline.HistorySurvival.glfw.Window;
+import tk.minersonline.Minecart.glfw.Window;
 
 import static de.damios.guacamole.gdx.StartOnFirstThreadHelper.startNewJvmIfRequired;
 
@@ -83,8 +83,8 @@ As cited on the message above, a fix for that would be setting up the JVM flag `
 In order to avoid having to do anything outside of the application itself, a helper function [startNewJvmIfRequired()](https://github.com/crykn/guacamole/blob/eabb0ae27aecafad2ced071daf505b7222ec0074/gdx-desktop/src/main/java/de/damios/guacamole/gdx/StartOnFirstThreadHelper.java#L150) is being used for this template, that will automatically start a new JVM with the necessary flag if the application was started on macOS without `-XstartOnFirstThread`.  
 This solution can be seen being used inside the main method inside `tk.minersonline.HistorySurvival.Application.java` (as shown on the snippet above) and was provided by the [guacamole collection](https://github.com/crykn/guacamole), thanks for that! :pray:
 
-## [Util package](/src/main/java/tk/minersonline/HistorySurvival/util):
- - [Color.java](/src/main/java/tk/minersonline/HistorySurvival/util/Color.java): Utilitary enum class for RGB colors. You can instantiate a Color with RGB values by its name.  
+## [Util package](/src/main/java/tk/minersonline/Minecart/util):
+ - [Color.java](/src/main/java/tk/minersonline/Minecart/util/Color.java): Utilitary enum class for RGB colors. You can instantiate a Color with RGB values by its name.  
   For example, let's say you wanted to get the RGB values for the color `purple`:  
   ``` java
      // Call Color.from(nameOfYourColorAsString);
@@ -104,7 +104,7 @@ This solution can be seen being used inside the main method inside `tk.minersonl
   
   Besides the already existing colors inside `Color.java`, it's possible to modify it and add any additional colors as you desire.  
   
-  - [FileUtils.java](/src/main/java/tk/minersonline/HistorySurvival/util/FileUtils.java): Utilitary class that can retrieve the contents of a resource file as an `InputStream`.  
+  - [FileUtils.java](/src/main/java/tk/minersonline/Minecart/util/FileUtils.java): Utilitary class that can retrieve the contents of a resource file as an `InputStream`.  
    For example, let's say you wanted to get the contents of a file whose path is `{project_root}/src/main/resources/example/HelloWorld.txt`.  
    The following code would print out the file contents of the file:
    ``` java
@@ -114,15 +114,15 @@ This solution can be seen being used inside the main method inside `tk.minersonl
    _NOTE: Files should be stored inside: `{project_root}/src/main/resources/` as this is the starting root directory for resources.
    Storing files inside this directory will ensure the files can also be located when you build your application into a jar._
    
-## [Geometry Configuration package:](/src/main/java/tk/minersonline/HistorySurvival/geometry/configuration)
-   - [World.java](src/main/java/tk/minersonline/HistorySurvival/geometry/configuration/World.java):
+## [Geometry Configuration package:](/src/main/java/tk/minersonline/Minecart/geometry/configuration)
+   - [World.java](src/main/java/tk/minersonline/Minecart/geometry/configuration/World.java):
    Configuration class that holds the values representing the projection of the world.
    The static funcion _`setCoordinatePlane()`_ will apply the configured values to the `org.lwjgl.opengl.GL11.glOrtho()` function.  
-   For more details, take at look at [the class itself](/src/main/java/tk/minersonline/HistorySurvival/geometry/configuration/World.java).
+   For more details, take at look at [the class itself](/src/main/java/tk/minersonline/Minecart/geometry/configuration/World.java).
    
-## [GLFW package:](/src/main/java/tk.minersonline.HistorySurvival.glfw)
+## [GLFW package:](/src/main/java/tk/minersonline/Minecart/glfw)
    
-   - [Window.java](/src/main/java/tk.minersonline.HistorySurvival.glfw): Singleton class that holds the GLFW window configuration setup and the main game loop.
+   - [Window.java](/src/main/java/tk/minersonline/Minecart/glfw): Singleton class that holds the GLFW window configuration setup and the main game loop.
    
    _Usage:_
    ``` java
@@ -134,9 +134,9 @@ This solution can be seen being used inside the main method inside `tk.minersonl
      // ...
    ```
    
-   - [Listeners:](/src/main/java/tk/minersonline/HistorySurvival/glfw/listeners) A [Key Listener](/src/main/java/tk/minersonline/HistorySurvival/glfw/listeners/KeyListener.java) and a [Window Resize Listener](/src/main/java/tk/minersonline/HistorySurvival/glfw/listeners/WindowResizeListener.java) are configured for use with GLFW. Both are singletons.
+   - [Listeners:](/src/main/java/tk/minersonline/Minecart/glfw/listener) A [Key Listener](/src/main/java/tk/minersonline/Minecart/glfw/listener/KeyListener.java) and a [Window Resize Listener](/src/main/java/tk/minersonline/Minecart/glfw/listener/WindowResizeListener.java) are configured for use with GLFW. Both are singletons.
 
-   1) [Key Listener](/src/main/java/tk/minersonline/HistorySurvival/glfw/listeners/KeyListener.java)
+   1) [Key Listener](/src/main/java/tk/minersonline/Minecart/glfw/listener/KeyListener.java)
    _Example for quering if a key is pressed during the game loop:_
    ``` java
      // Get KeyListener instance
@@ -145,7 +145,7 @@ This solution can be seen being used inside the main method inside `tk.minersonl
             System.out.println("Space key is being pressed!");
         }
    ```
-   2) [Window Resize Listener](/src/main/java/tk/minersonline/HistorySurvival/glfw/listeners/WindowResizeListener.java): This listener will execute whatever is inside the method `reshape(long window, int width, int height);` whenever GLFW detects that the window has been resized.
+   2) [Window Resize Listener](/src/main/java/tk/minersonline/Minecart/glfw/listener/WindowResizeListener.java): This listener will execute whatever is inside the method `reshape(long window, int width, int height);` whenever GLFW detects that the window has been resized.
 
 ## Authors
 

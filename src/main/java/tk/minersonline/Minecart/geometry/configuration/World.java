@@ -1,4 +1,4 @@
-package tk.minersonline.HistorySurvival.geometry.configuration;
+package tk.minersonline.Minecart.geometry.configuration;
 
 import static org.lwjgl.opengl.GL11.glOrtho;
 
