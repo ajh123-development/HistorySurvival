@@ -1,4 +1,6 @@
-import glfw.Window;
+package tk.minersonline.HistorySurvival;
+
+import tk.minersonline.HistorySurvival.glfw.Window;
 
 import static de.damios.guacamole.gdx.StartOnFirstThreadHelper.startNewJvmIfRequired;
 

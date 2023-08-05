@@ -50,15 +50,15 @@ For more details about dependencies, take a look at the [build.gradle](build.gra
 
 This repository is divided into the following:
 
-## [Application.java](src/main/java/Application.java)
+## [tk.minersonline.HistorySurvival.Application.java](src/main/java/tk/minersonline/HistorySurvival/Application.java)
 _Class with the main method:_
 
 ``` java
-import glfw.Window;
+import tk.minersonline.HistorySurvival.glfw.Window;
 
 import static de.damios.guacamole.gdx.StartOnFirstThreadHelper.startNewJvmIfRequired;
 
-public class Application {
+public class tk.minersonline.HistorySurvival.Application {
 
     private static final Window WINDOW = Window.getInstance();
 
@@ -81,10 +81,10 @@ Caused by: java.lang.IllegalStateException: GLFW windows may only be created on 
 _More on that [here](http://forum.lwjgl.org/index.php?topic=6077.0)._  
 As cited on the message above, a fix for that would be setting up the JVM flag `-XstartOnFirstThread`. Even so, this is a manual process that needs to be done every time before the application is run on a MacOs system.  
 In order to avoid having to do anything outside of the application itself, a helper function [startNewJvmIfRequired()](https://github.com/crykn/guacamole/blob/eabb0ae27aecafad2ced071daf505b7222ec0074/gdx-desktop/src/main/java/de/damios/guacamole/gdx/StartOnFirstThreadHelper.java#L150) is being used for this template, that will automatically start a new JVM with the necessary flag if the application was started on macOS without `-XstartOnFirstThread`.  
-This solution can be seen being used inside the main method inside `Application.java` (as shown on the snippet above) and was provided by the [guacamole collection](https://github.com/crykn/guacamole), thanks for that! :pray:
+This solution can be seen being used inside the main method inside `tk.minersonline.HistorySurvival.Application.java` (as shown on the snippet above) and was provided by the [guacamole collection](https://github.com/crykn/guacamole), thanks for that! :pray:
 
-## [Util package](/src/main/java/util):
- - [Color.java](/src/main/java/util/Color.java): Utilitary enum class for RGB colors. You can instantiate a Color with RGB values by its name.  
+## [Util package](/src/main/java/tk/minersonline/HistorySurvival/util):
+ - [Color.java](/src/main/java/tk/minersonline/HistorySurvival/util/Color.java): Utilitary enum class for RGB colors. You can instantiate a Color with RGB values by its name.  
   For example, let's say you wanted to get the RGB values for the color `purple`:  
   ``` java
      // Call Color.from(nameOfYourColorAsString);
@@ -104,7 +104,7 @@ This solution can be seen being used inside the main method inside `Application.
   
   Besides the already existing colors inside `Color.java`, it's possible to modify it and add any additional colors as you desire.  
   
-  - [FileUtils.java](/src/main/java/util/FileUtils.java): Utilitary class that can retrieve the contents of a resource file as an `InputStream`.  
+  - [FileUtils.java](/src/main/java/tk/minersonline/HistorySurvival/util/FileUtils.java): Utilitary class that can retrieve the contents of a resource file as an `InputStream`.  
    For example, let's say you wanted to get the contents of a file whose path is `{project_root}/src/main/resources/example/HelloWorld.txt`.  
    The following code would print out the file contents of the file:
    ``` java
@@ -114,15 +114,15 @@ This solution can be seen being used inside the main method inside `Application.
    _NOTE: Files should be stored inside: `{project_root}/src/main/resources/` as this is the starting root directory for resources.
    Storing files inside this directory will ensure the files can also be located when you build your application into a jar._
    
-## [Geometry Configuration package:](/src/main/java/geometry/configuration)
-   - [World.java](src/main/java/geometry/configuration/World.java):
+## [Geometry Configuration package:](/src/main/java/tk/minersonline/HistorySurvival/geometry/configuration)
+   - [World.java](src/main/java/tk/minersonline/HistorySurvival/geometry/configuration/World.java):
    Configuration class that holds the values representing the projection of the world.
    The static funcion _`setCoordinatePlane()`_ will apply the configured values to the `org.lwjgl.opengl.GL11.glOrtho()` function.  
-   For more details, take at look at [the class itself](/src/main/java/geometry/configuration/World.java).
+   For more details, take at look at [the class itself](/src/main/java/tk/minersonline/HistorySurvival/geometry/configuration/World.java).
    
-## [GLFW package:](/src/main/java/glfw)
+## [GLFW package:](/src/main/java/tk.minersonline.HistorySurvival.glfw)
    
-   - [Window.java](/src/main/java/glfw): Singleton class that holds the GLFW window configuration setup and the main game loop.
+   - [Window.java](/src/main/java/tk.minersonline.HistorySurvival.glfw): Singleton class that holds the GLFW window configuration setup and the main game loop.
    
    _Usage:_
    ``` java
@@ -134,9 +134,9 @@ This solution can be seen being used inside the main method inside `Application.
      // ...
    ```
    
-   - [Listeners:](/src/main/java/glfw/listeners) A [Key Listener](/src/main/java/glfw/listeners/KeyListener.java) and a [Window Resize Listener](/src/main/java/glfw/listeners/WindowResizeListener.java) are configured for use with GLFW. Both are singletons.
+   - [Listeners:](/src/main/java/tk/minersonline/HistorySurvival/glfw/listeners) A [Key Listener](/src/main/java/tk/minersonline/HistorySurvival/glfw/listeners/KeyListener.java) and a [Window Resize Listener](/src/main/java/tk/minersonline/HistorySurvival/glfw/listeners/WindowResizeListener.java) are configured for use with GLFW. Both are singletons.
 
-   1) [Key Listener](/src/main/java/glfw/listeners/KeyListener.java)
+   1) [Key Listener](/src/main/java/tk/minersonline/HistorySurvival/glfw/listeners/KeyListener.java)
    _Example for quering if a key is pressed during the game loop:_
    ``` java
      // Get KeyListener instance
@@ -145,7 +145,7 @@ This solution can be seen being used inside the main method inside `Application.
             System.out.println("Space key is being pressed!");
         }
    ```
-   2) [Window Resize Listener](/src/main/java/glfw/listeners/WindowResizeListener.java): This listener will execute whatever is inside the method `reshape(long window, int width, int height);` whenever GLFW detects that the window has been resized.
+   2) [Window Resize Listener](/src/main/java/tk/minersonline/HistorySurvival/glfw/listeners/WindowResizeListener.java): This listener will execute whatever is inside the method `reshape(long window, int width, int height);` whenever GLFW detects that the window has been resized.
 
 ## Authors
 

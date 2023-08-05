@@ -1,4 +1,4 @@
-package util;
+package tk.minersonline.HistorySurvival.util;
 
 import java.io.InputStream;
 

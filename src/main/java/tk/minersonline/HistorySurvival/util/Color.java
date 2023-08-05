@@ -1,4 +1,4 @@
-package util;
+package tk.minersonline.HistorySurvival.util;
 
 import static java.util.Arrays.stream;
 

@@ -1,4 +1,4 @@
-package glfw.listener;
+package tk.minersonline.HistorySurvival.glfw.listener;
 
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 

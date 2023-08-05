@@ -3,7 +3,9 @@ plugins {
     id "application"
 }
 
-group "org.example"
+import org.gradle.internal.os.OperatingSystem
+
+group "tk.minersonline.HistorySurvival"
 version "1.0-SNAPSHOT"
 
 sourceCompatibility = 1.11
@@ -11,7 +13,25 @@ sourceCompatibility = 1.11
 project.ext.lwjglVersion = "3.2.3"
 project.ext.jomlVersion = "1.10.1"
 project.ext.guacamoleVersion = "0.3.1"
-project.ext.lwjglNatives = "natives-macos"
+project.ext.lwjglNatives = ""
+
+switch (OperatingSystem.current()) {
+	case OperatingSystem.LINUX:
+		def osArch = System.getProperty("os.arch")
+		project.ext.lwjglNatives = osArch.startsWith("arm") || osArch.startsWith("aarch64")
+			? "natives-linux-${osArch.contains("64") || osArch.startsWith("armv8") ? "arm64" : "arm32"}"
+			: "natives-linux"
+		break
+	case OperatingSystem.MAC_OS:
+		project.ext.lwjglNatives = System.getProperty("os.arch").startsWith("aarch64") ? "natives-macos-arm64" : "natives-macos"
+		break
+	case OperatingSystem.WINDOWS:
+		def osArch = System.getProperty("os.arch")
+		project.ext.lwjglNatives = osArch.contains("64")
+			? "natives-windows${osArch.startsWith("aarch64") ? "-arm64" : ""}"
+			: "natives-windows-x86"
+		break
+}
 
 repositories {
     mavenCentral()
@@ -40,4 +60,4 @@ dependencies {
     testCompile group: "org.junit.jupiter", name: "junit-jupiter-api", version: "5.7.0"
 }
 
-mainClassName = 'Application'
+mainClassName = 'tk.minersonline.HistorySurvival.Application'
