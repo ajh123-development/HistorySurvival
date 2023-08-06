@@ -1,4 +1,4 @@
-package tk.minersonline.Minecart.glfw.listener;
+package tk.minersonline.Minecart.glfw.window.listener;
 
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 

@@ -54,7 +54,7 @@ This repository is divided into the following:
 _Class with the main method:_
 
 ``` java
-import tk.minersonline.Minecart.glfw.Window;
+import tk.minersonline.Minecart.glfw.window.Window;
 
 import static de.damios.guacamole.gdx.StartOnFirstThreadHelper.startNewJvmIfRequired;
 
