@@ -7,8 +7,8 @@ public class WindowConfig {
 	private final int MIN_HEIGHT;
 	private final String TITLE;
 
-	public WindowConfig(int defaultWith, int defaultHeight, int minWidth, int minHeight, String title) {
-		DEFAULT_WIDTH = defaultWith;
+	public WindowConfig(int defaultWidth, int defaultHeight, int minWidth, int minHeight, String title) {
+		DEFAULT_WIDTH = defaultWidth;
 		DEFAULT_HEIGHT = defaultHeight;
 		MIN_WIDTH = minWidth;
 		MIN_HEIGHT = minHeight;

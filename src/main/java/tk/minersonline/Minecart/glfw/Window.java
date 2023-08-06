@@ -35,23 +35,18 @@ public class Window {
 
     private static Window INSTANCE = null;
 
-    private static final int DEFAULT_WIDTH = 800;
-    private static final int DEFAULT_HEIGHT = 600;
-    private static final int MIN_WIDTH = 400;
-    private static final int MIN_HEIGHT = 600;
-    private static final int MAX_WIDTH = GL_DONT_CARE;
-    private static final int MAX_HEIGHT = GL_DONT_CARE;
-    private static final String TITLE = "Hello World!";
+    private final WindowConfig config;
     private static final Color BACKGROUND_COLOR = WHITE;
 
     private Window(WindowConfig config) {
-        this.width = DEFAULT_WIDTH;
-        this.height = DEFAULT_HEIGHT;
+        this.config = config;
+        this.width = config.getDefaultWidth();
+        this.height = config.getDefaultHeight();
     }
 
-    public static Window getInstance() {
+    public static Window getInstance(WindowConfig config) {
         if (INSTANCE == null) {
-            INSTANCE = new Window();
+            INSTANCE = new Window(config);
         }
         return INSTANCE;
     }
@@ -159,7 +154,7 @@ public class Window {
 
     private long createAndConfigureWindow() {
         // Create the window
-        long windowAddress = glfwCreateWindow(this.width, this.height, TITLE, NULL, NULL);
+        long windowAddress = glfwCreateWindow(this.width, this.height, config.getTitle(), NULL, NULL);
 
         if (windowAddress == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
@@ -168,7 +163,7 @@ public class Window {
         // tk.minersonline.Minecart.glfw window Configuration
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-        glfwSetWindowSizeLimits(windowAddress, MIN_WIDTH, MIN_HEIGHT, MAX_WIDTH, MAX_HEIGHT);
+        glfwSetWindowSizeLimits(windowAddress, config.getMinWidth(), config.getMinHeight(), GL_DONT_CARE, GL_DONT_CARE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
         return windowAddress;
@@ -176,7 +171,7 @@ public class Window {
 
     private void setListeners() {
         glfwSetKeyCallback(glfwWindowAddress, KeyListener.getInstance());
-        glfwSetWindowSizeCallback(glfwWindowAddress, WindowResizeListener.getInstance());
+        glfwSetWindowSizeCallback(glfwWindowAddress, WindowResizeListener.getInstance(config));
     }
 
     private void terminateGracefully() {
