@@ -9,7 +9,7 @@ public interface MinecartGame {
 
 	void init(Window window, Scene scene, Renderer render);
 
-	void input(Window window, Scene scene, long diffTimeMillis);
+	void input(Window window, Scene scene, long diffTimeMillis, boolean inputConsumed);
 
 	void update(Window window, Scene scene, long diffTimeMillis);
 }

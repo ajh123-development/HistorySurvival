@@ -1,6 +1,7 @@
 package tk.minersonline.Minecart.glfw.shaders;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.lwjgl.system.MemoryStack;
 
 import java.util.*;
@@ -42,5 +43,9 @@ public class UniformsMap {
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			glUniformMatrix4fv(getUniformLocation(uniformName), false, value.get(stack.mallocFloat(16)));
 		}
+	}
+
+	public void setUniform(String uniformName, Vector2f value) {
+		glUniform2f(getUniformLocation(uniformName), value.x, value.y);
 	}
 }

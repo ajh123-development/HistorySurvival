@@ -13,6 +13,7 @@ sourceCompatibility = 17
 project.ext.lwjglVersion = "3.3.2"
 project.ext.jomlVersion = "1.10.1"
 project.ext.guacamoleVersion = "0.3.1"
+project.ext.imguiVersion = "1.86.10"
 project.ext.lwjglNatives = ""
 
 switch (OperatingSystem.current()) {
@@ -56,6 +57,7 @@ dependencies {
     implementation "org.joml:joml:$jomlVersion"
 
     implementation "com.github.crykn.guacamole:gdx-desktop:$guacamoleVersion"
+    implementation "io.github.spair:imgui-java-app:$imguiVersion"
 }
 
 mainClassName = 'tk.minersonline.HistorySurvival.Application'

@@ -153,4 +153,8 @@ public class Window {
     public MouseListener getMouseListener() {
         return mouseListener;
     }
+
+    public long getGlfwWindowAddress() {
+        return glfwWindowAddress;
+    }
 }

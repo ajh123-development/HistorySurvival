@@ -2,6 +2,7 @@ package tk.minersonline.Minecart;
 
 import tk.minersonline.Minecart.glfw.window.Window;
 import tk.minersonline.Minecart.glfw.window.WindowConfig;
+import tk.minersonline.Minecart.gui.IGuiInstance;
 import tk.minersonline.Minecart.scene.Scene;
 import tk.minersonline.Minecart.glfw.Renderer;
 import tk.minersonline.Minecart.scene.views.ProjectionHandler;
@@ -24,7 +25,7 @@ public class MinecartEngine {
 		targetFps = config.getTargetFps();
 		targetUps = config.getTargetUps();
 		this.game = game;
-		this.render = new Renderer();
+		this.render = new Renderer(window);
 		this.scene = new Scene(projection);
 		game.init(window, scene, render);
 		running = true;
@@ -38,7 +39,10 @@ public class MinecartEngine {
 	}
 
 	private void resize() {
-		scene.resize(window.getWidth(), window.getHeight());
+		int width = window.getWidth();
+		int height = window.getHeight();
+		scene.resize(width, height);
+		render.resize(width, height);
 	}
 
 	private void run() {
@@ -49,6 +53,7 @@ public class MinecartEngine {
 		float deltaFps = 0;
 
 		long updateTime = initialTime;
+		IGuiInstance iGuiInstance = scene.getGuiInstance();
 		while (running && !window.windowShouldClose()) {
 			window.pollEvents();
 
@@ -57,11 +62,9 @@ public class MinecartEngine {
 			deltaFps += (now - initialTime) / timeR;
 
 			if (targetFps <= 0 || deltaFps >= 1) {
-				game.input(window, scene, now - initialTime);
-			}
-			if (targetFps <= 0 || deltaFps >= 1) {
 				window.getMouseListener().input();
-				game.input(window, scene, now - initialTime);
+				boolean inputConsumed = iGuiInstance != null && iGuiInstance.handleGuiInput(scene, window);
+				game.input(window, scene, now - initialTime, inputConsumed);
 			}
 
 			if (deltaUpdate >= 1) {

@@ -1,5 +1,6 @@
 package tk.minersonline.Minecart.scene;
 
+import tk.minersonline.Minecart.gui.IGuiInstance;
 import tk.minersonline.Minecart.scene.objects.Entity;
 import tk.minersonline.Minecart.scene.objects.Model;
 import tk.minersonline.Minecart.scene.views.ProjectionHandler;
@@ -13,12 +14,21 @@ public class Scene {
     private final ProjectionHandler projection;
 
     private final Camera camera;
+    private IGuiInstance guiInstance;
 
     public Scene(ProjectionHandler projection) {
         this.projection = projection;
         textureCache = new TextureCache();
         modelMap = new HashMap<>();
         camera = new Camera();
+    }
+
+    public IGuiInstance getGuiInstance() {
+        return guiInstance;
+    }
+
+    public void setGuiInstance(IGuiInstance guiInstance) {
+        this.guiInstance = guiInstance;
     }
 
     public Camera getCamera() {
