@@ -7,6 +7,7 @@ import tk.minersonline.Minecart.glfw.window.WindowConfig;
 import tk.minersonline.Minecart.scene.Scene;
 import tk.minersonline.Minecart.glfw.Renderer;
 import tk.minersonline.Minecart.scene.objects.Mesh;
+import tk.minersonline.Minecart.scene.views.ProjectionView;
 
 import static de.damios.guacamole.gdx.StartOnFirstThreadHelper.startNewJvmIfRequired;
 
@@ -28,7 +29,14 @@ public class Application implements MinecartGame {
         if (startNewJvmIfRequired()) {
             System.exit(0);
         }
-        MinecartEngine engine = new MinecartEngine(CONFIG, new Application());
+        MinecartEngine engine = new MinecartEngine(
+            CONFIG,
+            new Application(),
+            new ProjectionView(
+                CONFIG.getDefaultWidth(),
+                CONFIG.getDefaultHeight()
+            )
+        );
         engine.start();
     }
 
@@ -40,12 +48,22 @@ public class Application implements MinecartGame {
     @Override
     public void init(Window window, Scene scene, Renderer render) {
         float[] positions = new float[]{
-                0.0f, 0.5f, 0.0f,
-                -0.5f, -0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f
+            -0.5f, 0.5f, -1.0f,
+            -0.5f, -0.5f, -1.0f,
+            0.5f, -0.5f, -1.0f,
+            0.5f, 0.5f, -1.0f,
         };
-        Mesh mesh = new Mesh(positions, 3);
-        scene.addMesh("triangle", mesh);
+        float[] colors = new float[]{
+            0.5f, 0.0f, 0.0f,
+            0.0f, 0.5f, 0.0f,
+            0.0f, 0.0f, 0.5f,
+            0.0f, 0.5f, 0.5f,
+        };
+        int[] indices = new int[]{
+            0, 1, 3, 3, 1, 2,
+        };
+        Mesh mesh = new Mesh(positions, colors, indices);
+        scene.addMesh("quad", mesh);
     }
 
     @Override

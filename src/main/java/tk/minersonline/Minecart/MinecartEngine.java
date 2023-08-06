@@ -4,19 +4,19 @@ import tk.minersonline.Minecart.glfw.window.Window;
 import tk.minersonline.Minecart.glfw.window.WindowConfig;
 import tk.minersonline.Minecart.scene.Scene;
 import tk.minersonline.Minecart.glfw.Renderer;
+import tk.minersonline.Minecart.scene.views.ProjectionHandler;
 
 public class MinecartEngine {
-	public static final int TARGET_UPS = 30;
 	private final MinecartGame game;
 	private final Window window;
-	private Renderer render;
+	private final Renderer render;
 	private boolean running;
-	private Scene scene;
-	private int targetFps;
-	private int targetUps;
+	private final Scene scene;
+	private final int targetFps;
+	private final int targetUps;
 
 
-	public MinecartEngine(WindowConfig config, MinecartGame game) {
+	public MinecartEngine(WindowConfig config, MinecartGame game, ProjectionHandler projection) {
 		this.window = new Window(config, () -> {
 			resize();
 			return null;
@@ -25,7 +25,7 @@ public class MinecartEngine {
 		targetUps = config.getTargetUps();
 		this.game = game;
 		this.render = new Renderer();
-		this.scene = new Scene();
+		this.scene = new Scene(projection);
 		game.init(window, scene, render);
 		running = true;
 	}
@@ -38,7 +38,7 @@ public class MinecartEngine {
 	}
 
 	private void resize() {
-		// Nothing to be done yet
+		scene.resize(window.getWidth(), window.getHeight());
 	}
 
 	private void run() {
