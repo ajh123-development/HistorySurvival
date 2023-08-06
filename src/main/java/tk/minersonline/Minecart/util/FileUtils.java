@@ -1,10 +1,13 @@
 package tk.minersonline.Minecart.util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryUtil;
+
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class FileUtils {
 
@@ -30,5 +33,27 @@ public class FileUtils {
             out.append(buffer, 0, numRead);
         }
         return out.toString();
+    }
+
+    public static ByteBuffer readFromClasspath(final String name) {
+        ByteBuffer buf;
+        try (var channel = Channels.newChannel(
+                Objects.requireNonNull(FileUtils.class.getClassLoader().getResourceAsStream(name), "The resource "+name+" cannot be found"))) {
+            buf = BufferUtils.createByteBuffer(10);
+            while (true) {
+                var readbytes = channel.read(buf);
+                if (readbytes == -1) break;
+                if (buf.remaining() == 0) { // extend the buffer by 50%
+                    var newBuf = BufferUtils.createByteBuffer(buf.capacity() * 3 / 2);
+                    buf.flip();
+                    newBuf.put(buf);
+                    buf = newBuf;
+                }
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        buf.flip();
+        return MemoryUtil.memSlice(buf); // we trim the final buffer to the size of the content
     }
 }

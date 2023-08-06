@@ -9,11 +9,17 @@ import java.util.Map;
 
 public class Scene {
     private final Map<String, Model> modelMap;
+    private final TextureCache textureCache;
     private final ProjectionHandler projection;
 
     public Scene(ProjectionHandler projection) {
         this.projection = projection;
+        textureCache = new TextureCache();
         modelMap = new HashMap<>();
+    }
+
+    public TextureCache getTextureCache() {
+        return textureCache;
     }
 
     public void addEntity(Entity entity) {

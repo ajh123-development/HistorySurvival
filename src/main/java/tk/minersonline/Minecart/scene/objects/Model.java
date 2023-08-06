@@ -5,17 +5,18 @@ import java.util.*;
 public class Model {
 	private final String id;
 	private final List<Entity> entitiesList;
-	private final List<Mesh> meshList;
+	private final List<Material> materialList;
 
-	public Model(String id, List<Mesh> meshList) {
+	public Model(String id, List<Material> materialList) {
 		this.id = id;
-		this.meshList = meshList;
-		this.entitiesList = new ArrayList<>();
+		entitiesList = new ArrayList<>();
+		this.materialList = materialList;
 	}
 
 	public void cleanup() {
-		meshList.forEach(Mesh::cleanup);
+		materialList.forEach(Material::cleanup);
 	}
+
 	public List<Entity> getEntitiesList() {
 		return entitiesList;
 	}
@@ -24,7 +25,7 @@ public class Model {
 		return id;
 	}
 
-	public List<Mesh> getMeshList() {
-		return meshList;
+	public List<Material> getMaterialList() {
+		return materialList;
 	}
 }

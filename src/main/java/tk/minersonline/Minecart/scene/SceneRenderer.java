@@ -3,8 +3,7 @@ package tk.minersonline.Minecart.scene;
 import tk.minersonline.Minecart.glfw.shaders.ShaderModuleData;
 import tk.minersonline.Minecart.glfw.shaders.ShaderProgram;
 import tk.minersonline.Minecart.glfw.shaders.UniformsMap;
-import tk.minersonline.Minecart.scene.objects.Entity;
-import tk.minersonline.Minecart.scene.objects.Model;
+import tk.minersonline.Minecart.scene.objects.*;
 
 import java.util.*;
 
@@ -30,6 +29,7 @@ public class SceneRenderer {
 		uniformsMap = new UniformsMap(shaderProgram.getProgramId());
 		uniformsMap.createUniform("projectionMatrix");
 		uniformsMap.createUniform("modelMatrix");
+		uniformsMap.createUniform("txtSampler");
 	}
 
 	public void render(Scene scene) {
@@ -37,16 +37,26 @@ public class SceneRenderer {
 
 		uniformsMap.setUniform("projectionMatrix", scene.getProjection().getMatrix());
 
+		uniformsMap.setUniform("txtSampler", 0);
+
 		Collection<Model> models = scene.getModelMap().values();
+		TextureCache textureCache = scene.getTextureCache();
 		for (Model model : models) {
-			model.getMeshList().stream().forEach(mesh -> {
-				glBindVertexArray(mesh.getVaoId());
-				List<Entity> entities = model.getEntitiesList();
-				for (Entity entity : entities) {
-					uniformsMap.setUniform("modelMatrix", entity.getModelMatrix());
-					glDrawElements(GL_TRIANGLES, mesh.getNumVertices(), GL_UNSIGNED_INT, 0);
+			List<Entity> entities = model.getEntitiesList();
+
+			for (Material material : model.getMaterialList()) {
+				Texture texture = textureCache.getTexture(material.getTexturePath());
+				glActiveTexture(GL_TEXTURE0);
+				texture.bind();
+
+				for (Mesh mesh : material.getMeshList()) {
+					glBindVertexArray(mesh.getVaoId());
+					for (Entity entity : entities) {
+						uniformsMap.setUniform("modelMatrix", entity.getModelMatrix());
+						glDrawElements(GL_TRIANGLES, mesh.getNumVertices(), GL_UNSIGNED_INT, 0);
+					}
 				}
-			});
+			}
 		}
 
 		glBindVertexArray(0);
