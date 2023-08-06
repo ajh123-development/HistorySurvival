@@ -3,6 +3,7 @@ package tk.minersonline.Minecart.glfw.window;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
 import tk.minersonline.Minecart.glfw.window.listener.KeyListener;
+import tk.minersonline.Minecart.glfw.window.listener.MouseListener;
 import tk.minersonline.Minecart.glfw.window.listener.WindowResizeListener;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
@@ -22,6 +23,7 @@ public class Window {
     private long glfwWindowAddress;
     private final Callable<Void> resizeFunc;
 
+    private MouseListener mouseListener = null;
 
     private final WindowConfig config;
 
@@ -111,6 +113,7 @@ public class Window {
     private void setListeners() {
         glfwSetKeyCallback(glfwWindowAddress, KeyListener.getInstance());
         glfwSetWindowSizeCallback(glfwWindowAddress, new WindowResizeListener(this));
+        this.mouseListener = new MouseListener(glfwWindowAddress);
     }
 
     public void cleanup() {
@@ -145,5 +148,9 @@ public class Window {
 
     public int getHeight() {
         return height;
+    }
+
+    public MouseListener getMouseListener() {
+        return mouseListener;
     }
 }

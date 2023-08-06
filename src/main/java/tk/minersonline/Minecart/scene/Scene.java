@@ -12,10 +12,17 @@ public class Scene {
     private final TextureCache textureCache;
     private final ProjectionHandler projection;
 
+    private final Camera camera;
+
     public Scene(ProjectionHandler projection) {
         this.projection = projection;
         textureCache = new TextureCache();
         modelMap = new HashMap<>();
+        camera = new Camera();
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 
     public TextureCache getTextureCache() {

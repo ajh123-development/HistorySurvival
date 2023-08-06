@@ -59,6 +59,10 @@ public class MinecartEngine {
 			if (targetFps <= 0 || deltaFps >= 1) {
 				game.input(window, scene, now - initialTime);
 			}
+			if (targetFps <= 0 || deltaFps >= 1) {
+				window.getMouseListener().input();
+				game.input(window, scene, now - initialTime);
+			}
 
 			if (deltaUpdate >= 1) {
 				long diffTimeMillis = now - updateTime;
