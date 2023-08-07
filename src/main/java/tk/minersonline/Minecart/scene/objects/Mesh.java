@@ -27,7 +27,7 @@ public class Mesh {
 			// Positions VBO
 			int vboId = glGenBuffers();
 			vboIdList.add(vboId);
-			FloatBuffer positionsBuffer = stack.callocFloat(positions.length);
+			FloatBuffer positionsBuffer = MemoryUtil.memAllocFloat(positions.length);
 			positionsBuffer.put(0, positions);
 			glBindBuffer(GL_ARRAY_BUFFER, vboId);
 			glBufferData(GL_ARRAY_BUFFER, positionsBuffer, GL_STATIC_DRAW);

@@ -3,6 +3,7 @@ package tk.minersonline.Minecart.scene;
 import tk.minersonline.Minecart.gui.IGuiInstance;
 import tk.minersonline.Minecart.scene.objects.Entity;
 import tk.minersonline.Minecart.scene.objects.Model;
+import tk.minersonline.Minecart.scene.terrain.world.World;
 import tk.minersonline.Minecart.scene.views.ProjectionHandler;
 
 import java.util.HashMap;
@@ -13,6 +14,8 @@ public class Scene {
     private final TextureCache textureCache;
     private final ProjectionHandler projection;
 
+    private final World world;
+
     private final Camera camera;
     private IGuiInstance guiInstance;
 
@@ -21,6 +24,8 @@ public class Scene {
         textureCache = new TextureCache();
         modelMap = new HashMap<>();
         camera = new Camera();
+        world = new World(camera);
+        world.generateWorld();
     }
 
     public IGuiInstance getGuiInstance() {
@@ -33,6 +38,10 @@ public class Scene {
 
     public Camera getCamera() {
         return camera;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public TextureCache getTextureCache() {

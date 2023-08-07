@@ -11,6 +11,7 @@ import tk.minersonline.Minecart.glfw.shaders.ShaderModuleData;
 import tk.minersonline.Minecart.glfw.shaders.ShaderProgram;
 import tk.minersonline.Minecart.glfw.shaders.UniformsMap;
 import tk.minersonline.Minecart.glfw.window.Window;
+import tk.minersonline.Minecart.glfw.window.listener.KeyListener;
 import tk.minersonline.Minecart.scene.Scene;
 import tk.minersonline.Minecart.scene.objects.Texture;
 
@@ -85,6 +86,7 @@ public class GuiRenderer {
 		io.setKeyMap(ImGuiKey.KeyPadEnter, GLFW_KEY_KP_ENTER);
 
 		glfwSetKeyCallback(window.getGlfwWindowAddress(), (handle, key, scancode, action, mods) -> {
+			KeyListener.getInstance().invoke(handle, key, scancode, action, mods);
 			if (!io.getWantCaptureKeyboard()) {
 				return;
 			}
@@ -112,7 +114,7 @@ public class GuiRenderer {
 		if (guiInstance == null) {
 			return;
 		}
-		guiInstance.drawGui();
+		guiInstance.drawGui(scene);
 
 		shaderProgram.bind();
 

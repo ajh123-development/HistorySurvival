@@ -9,6 +9,8 @@ import tk.minersonline.Minecart.glfw.window.listener.MouseListener;
 import tk.minersonline.Minecart.scene.Camera;
 import tk.minersonline.Minecart.scene.Scene;
 import tk.minersonline.Minecart.scene.objects.*;
+import tk.minersonline.Minecart.scene.terrain.chunk.Chunk;
+import tk.minersonline.Minecart.templates.models.Cube;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
 
 public class GameImplementer implements MinecartGame {
 	private static final float MOUSE_SENSITIVITY = 0.1f;
-	private static final float MOVEMENT_SPEED = 0.005f;
+	private static final float MOVEMENT_SPEED = 0.05f;
 
 	private Entity cubeEntity;
 	private float rotation;
@@ -141,6 +143,7 @@ public class GameImplementer implements MinecartGame {
 		scene.addEntity(cubeEntity);
 
 		scene.setGuiInstance(new GuiImplementer());
+		scene.getCamera().setPosition(0, 2* Chunk.CHUNK_SIZE,0);
 	}
 
 	@Override
