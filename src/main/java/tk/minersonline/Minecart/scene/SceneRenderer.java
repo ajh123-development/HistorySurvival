@@ -34,6 +34,7 @@ public class SceneRenderer {
 	}
 
 	public void render(Scene scene) {
+		glDisable(GL_CULL_FACE);
 		shaderProgram.bind();
 
 		uniformsMap.setUniform("projectionMatrix", scene.getProjection().getMatrix());
@@ -63,5 +64,6 @@ public class SceneRenderer {
 		glBindVertexArray(0);
 
 		shaderProgram.unbind();
+		glEnable(GL_CULL_FACE);
 	}
 }

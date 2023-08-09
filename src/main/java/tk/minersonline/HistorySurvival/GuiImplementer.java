@@ -13,9 +13,11 @@ import tk.minersonline.Minecart.glfw.window.Window;
 import tk.minersonline.Minecart.glfw.window.listener.MouseListener;
 import tk.minersonline.Minecart.gui.IGuiInstance;
 import tk.minersonline.Minecart.scene.Scene;
+import tk.minersonline.Minecart.scene.terrain.WorldRenderer;
 
 public class GuiImplementer implements IGuiInstance {
 	private static int location = 0;
+	private static ImBoolean FILL_POLYGON = new ImBoolean(WorldRenderer.FILL_POLYGON);
 
 	@Override
 	public void drawGui(Scene scene) {
@@ -59,6 +61,10 @@ public class GuiImplementer implements IGuiInstance {
 			ImGui.separator();
 			Vector3f position = scene.getCamera().getPosition();
 			ImGui.text("Camera Position: (%.1f,%.1f,%.1f)".formatted(position.x, position.y, position.z));
+			ImGui.separator();
+			if (ImGui.checkbox("Fill polygons", FILL_POLYGON)) {
+				WorldRenderer.FILL_POLYGON = FILL_POLYGON.get();
+			}
 			if (ImGui.beginPopupContextWindow())
 			{
 				if (ImGui.menuItem("Custom",       null, location == -1)) location = -1;

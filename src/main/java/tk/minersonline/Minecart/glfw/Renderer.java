@@ -5,11 +5,13 @@ import tk.minersonline.Minecart.glfw.window.Window;
 import tk.minersonline.Minecart.gui.GuiRenderer;
 import tk.minersonline.Minecart.scene.Scene;
 import tk.minersonline.Minecart.scene.SceneRenderer;
+import tk.minersonline.Minecart.scene.terrain.WorldRenderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class Renderer {
 	private final SceneRenderer sceneRenderer;
+	private final WorldRenderer worldRenderer;
 	private final GuiRenderer guiRenderer;
 
 	public Renderer(Window window) {
@@ -21,6 +23,7 @@ public class Renderer {
 		GL.createCapabilities();
 		glEnable(GL_DEPTH_TEST);
 		sceneRenderer = new SceneRenderer();
+		worldRenderer = new WorldRenderer();
 		guiRenderer = new GuiRenderer(window);
 	}
 
@@ -32,7 +35,7 @@ public class Renderer {
 	public void render(Window window, Scene scene) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glViewport(0, 0, window.getWidth(), window.getHeight());
-		scene.getWorld().render(scene);
+		worldRenderer.render(scene.getWorld());
 		sceneRenderer.render(scene);
 		guiRenderer.render(scene);
 	}
