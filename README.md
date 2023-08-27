@@ -12,8 +12,7 @@
 
 ## Credits
 
-* [lwjgl-template](https://github.com/sarah-lacerda/lwjgl-template)
-* [Voxel-Engine-Example](https://github.com/knaxel/Voxel-Engine-Example)
+* [Java-Leven](https://github.com/proton2/java-leven)
 
 ## License
 
