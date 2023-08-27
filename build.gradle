@@ -65,4 +65,4 @@ dependencies {
     implementation "java3d:vecmath:$vecmathVersion"
 }
 
-mainClassName = 'tk.minersonline.HistorySurvival.Application'
+mainClassName = 'uk.minersonline.HistorySurvival.Application'
