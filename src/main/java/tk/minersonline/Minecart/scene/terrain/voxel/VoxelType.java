@@ -2,8 +2,9 @@ package tk.minersonline.Minecart.scene.terrain.voxel;
 
 public enum VoxelType {
 	AIR(0),
-	DIRT(1),
-	STONE(2);
+	GRASS(1),
+	STONE(2),
+	DIRT(3);
 	// Add more voxel types as needed
 
 	private final int id;
