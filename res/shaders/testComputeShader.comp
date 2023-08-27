@@ -1,0 +1,39 @@
+#version 450
+#extension GL_ARB_separate_shader_objects : enable
+
+layout (local_size_x = 9, local_size_y = 8, local_size_z = 8) in;
+
+struct DensityPrimitive
+{
+    vec4 position;
+    vec4 size;
+};
+
+layout (std430, binding = 0) buffer indices {
+    int j[];
+} bit_reversed;
+
+layout (std430, binding = 1) buffer layoutName {
+    int it[];
+} Perm;
+
+layout (std430, binding = 2) buffer primitivesLayout{
+    DensityPrimitive primitiveMods[];
+};
+
+uniform int N;  //primitiveModCount
+
+void main(void)
+{
+    uint index = gl_GlobalInvocationID.x + 9 * (gl_GlobalInvocationID.y + 8 * gl_GlobalInvocationID.z);
+
+    int t = bit_reversed.j[index];
+    bit_reversed.j[index] = t + N;
+
+    //permutations[gl_GlobalInvocationID.x] = 6;
+    permutations[index] = 6;
+
+    primitiveMods[N].position = vec4(1, 0, 0, 0);
+    primitiveMods[N].size = vec4(1, 0, 0, 0);
+}
+
