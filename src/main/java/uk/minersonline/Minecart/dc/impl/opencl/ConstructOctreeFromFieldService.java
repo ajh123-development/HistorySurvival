@@ -10,7 +10,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL10;
 
-import java.nio.IntBuffer;
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opencl.CL10.*;
 
@@ -154,8 +154,8 @@ public class ConstructOctreeFromFieldService {
         CLKernel solveQEFsKernel = clCreateKernel(kernels.getKernel(KernelNames.OCTREE), "SolveQEFs", ctx.getErrcode_ret());
         OCLUtils.checkCLError(ctx.getErrcode_ret());
 
-        int [] fieldArray = {field.getMin().x, field.getMin().y, field.getMin().z, 0};
-        IntBuffer fieldBuff = IntBuffer.wrap(fieldArray);
+        float [] fieldArray = {field.getMin().x, field.getMin().y, field.getMin().z, 0.0f};
+        FloatBuffer fieldBuff = FloatBuffer.wrap(fieldArray);
 
         clSetKernelArg(solveQEFsKernel, 0, fieldBuff);
         clSetKernelArg(solveQEFsKernel, 1, d_qefsBuf.getMem());
