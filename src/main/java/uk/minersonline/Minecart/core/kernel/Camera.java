@@ -5,8 +5,8 @@ import uk.minersonline.Minecart.core.math.Vec3f;
 import uk.minersonline.Minecart.core.math.Vec4f;
 import uk.minersonline.Minecart.core.physics.Physics;
 import uk.minersonline.Minecart.core.utils.Constants;
-import uk.minersonline.Minecart.dc.utils.Frustum;
-import uk.minersonline.Minecart.dc.utils.Ray;
+import uk.minersonline.Minecart.terrain.utils.Frustum;
+import uk.minersonline.Minecart.terrain.utils.Ray;
 
 import static org.lwjgl.glfw.GLFW.*;
 

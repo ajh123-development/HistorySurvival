@@ -3,7 +3,7 @@ package uk.minersonline.Minecart.core.shaders;
 import uk.minersonline.Minecart.core.math.*;
 import uk.minersonline.Minecart.core.scene.GameObject;
 import uk.minersonline.Minecart.core.utils.BufferUtil;
-import uk.minersonline.Minecart.dc.entities.ModelEntity;
+import uk.minersonline.Minecart.terrain.entities.ModelEntity;
 
 import java.util.HashMap;
 

@@ -6,8 +6,8 @@ package uk.minersonline.Minecart.core.physics;
 //import com.badlogic.gdx.utils.SharedLibraryLoader;
 
 import uk.minersonline.Minecart.core.math.Vec3f;
-import uk.minersonline.Minecart.dc.ChunkNode;
-import uk.minersonline.Minecart.dc.utils.Aabb;
+import uk.minersonline.Minecart.terrain.ChunkNode;
+import uk.minersonline.Minecart.terrain.utils.Aabb;
 
 import java.util.logging.Logger;
 

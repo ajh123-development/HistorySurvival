@@ -1,7 +1,7 @@
 package uk.minersonline.Minecart.core.physics;
 
 import uk.minersonline.Minecart.core.math.Vec3f;
-import uk.minersonline.Minecart.dc.ChunkNode;
+import uk.minersonline.Minecart.terrain.ChunkNode;
 
 public interface Physics {
     float PLAYER_WIDTH = 48.f;

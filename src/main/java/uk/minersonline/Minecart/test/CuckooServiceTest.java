@@ -1,9 +1,9 @@
 package uk.minersonline.Minecart.test;
 
 import org.lwjgl.opencl.CLKernel;
-import uk.minersonline.Minecart.dc.impl.MeshGenerationContext;
-import uk.minersonline.Minecart.dc.impl.opencl.*;
-import uk.minersonline.Minecart.dc.utils.VoxelHelperUtils;
+import uk.minersonline.Minecart.terrain.impl.MeshGenerationContext;
+import uk.minersonline.Minecart.terrain.impl.opencl.*;
+import uk.minersonline.Minecart.terrain.utils.VoxelHelperUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL10;

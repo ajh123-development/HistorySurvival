@@ -3,8 +3,8 @@ package uk.minersonline.Minecart.core.utils;
 import uk.minersonline.Minecart.core.math.Matrix4f;
 import uk.minersonline.Minecart.core.math.Vec3i;
 import uk.minersonline.Minecart.core.model.Vertex;
-import uk.minersonline.Minecart.dc.entities.DebugDrawBuffer;
-import uk.minersonline.Minecart.dc.entities.MeshVertex;
+import uk.minersonline.Minecart.terrain.entities.DebugDrawBuffer;
+import uk.minersonline.Minecart.terrain.entities.MeshVertex;
 import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;

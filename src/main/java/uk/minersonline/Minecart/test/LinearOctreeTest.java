@@ -1,7 +1,7 @@
 package uk.minersonline.Minecart.test;
 
 import uk.minersonline.Minecart.core.math.Vec3i;
-import uk.minersonline.Minecart.dc.impl.MeshGenerationContext;
+import uk.minersonline.Minecart.terrain.impl.MeshGenerationContext;
 
 import java.util.HashMap;
 import java.util.Map;

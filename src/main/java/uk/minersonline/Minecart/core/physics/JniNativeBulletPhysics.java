@@ -13,8 +13,8 @@ package uk.minersonline.Minecart.core.physics;
 //import com.jme3.system.NativeLibraryLoader;
 
 import uk.minersonline.Minecart.core.math.Vec3f;
-import uk.minersonline.Minecart.dc.ChunkNode;
-import uk.minersonline.Minecart.dc.utils.Aabb;
+import uk.minersonline.Minecart.terrain.ChunkNode;
+import uk.minersonline.Minecart.terrain.utils.Aabb;
 
 public class JniNativeBulletPhysics implements Physics {
     private Vec3f collisionPos = new Vec3f();;

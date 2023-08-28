@@ -1,6 +1,6 @@
 package uk.minersonline.Minecart.core.buffers;
 
-import uk.minersonline.Minecart.dc.entities.MeshBuffer;
+import uk.minersonline.Minecart.terrain.entities.MeshBuffer;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.*;

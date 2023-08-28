@@ -1,7 +1,7 @@
 package uk.minersonline.Minecart.core.kernel;
 
 import uk.minersonline.Minecart.core.configs.Default;
-import uk.minersonline.Minecart.dc.ChunkOctreeWrapper;
+import uk.minersonline.Minecart.terrain.ChunkOctreeWrapper;
 
 /**
  * 

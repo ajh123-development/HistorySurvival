@@ -1,7 +1,7 @@
 package uk.minersonline.Minecart.core.buffers;
 
 import uk.minersonline.Minecart.core.utils.BufferUtil;
-import uk.minersonline.Minecart.dc.entities.DebugDrawBuffer;
+import uk.minersonline.Minecart.terrain.entities.DebugDrawBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;

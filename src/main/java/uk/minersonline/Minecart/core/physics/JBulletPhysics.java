@@ -19,9 +19,9 @@ import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
 import uk.minersonline.Minecart.core.math.Vec3f;
-import uk.minersonline.Minecart.dc.ChunkNode;
-import uk.minersonline.Minecart.dc.entities.MeshBuffer;
-import uk.minersonline.Minecart.dc.utils.Aabb;
+import uk.minersonline.Minecart.terrain.ChunkNode;
+import uk.minersonline.Minecart.terrain.entities.MeshBuffer;
+import uk.minersonline.Minecart.terrain.utils.Aabb;
 
 import javax.vecmath.Vector3f;
 import java.nio.ByteBuffer;

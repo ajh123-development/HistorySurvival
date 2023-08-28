@@ -1,8 +1,8 @@
 package uk.minersonline.Minecart.test;
 
-import uk.minersonline.Minecart.dc.impl.MeshGenerationContext;
-import uk.minersonline.Minecart.dc.impl.opencl.*;
-import uk.minersonline.Minecart.dc.utils.VoxelHelperUtils;
+import uk.minersonline.Minecart.terrain.impl.MeshGenerationContext;
+import uk.minersonline.Minecart.terrain.impl.opencl.*;
+import uk.minersonline.Minecart.terrain.utils.VoxelHelperUtils;
 import org.lwjgl.opencl.CL;
 
 import java.util.ArrayList;

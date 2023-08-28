@@ -3,10 +3,10 @@ package uk.minersonline.Minecart.test;
 import org.lwjgl.opencl.CLKernel;
 import org.lwjgl.opencl.CLProgram;
 import uk.minersonline.Minecart.core.utils.ResourceLoader;
-import uk.minersonline.Minecart.dc.impl.opencl.BufferGpu;
-import uk.minersonline.Minecart.dc.impl.opencl.BufferGpuService;
-import uk.minersonline.Minecart.dc.impl.opencl.ComputeContext;
-import uk.minersonline.Minecart.dc.impl.opencl.OCLUtils;
+import uk.minersonline.Minecart.terrain.impl.opencl.BufferGpu;
+import uk.minersonline.Minecart.terrain.impl.opencl.BufferGpuService;
+import uk.minersonline.Minecart.terrain.impl.opencl.ComputeContext;
+import uk.minersonline.Minecart.terrain.impl.opencl.OCLUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL;
@@ -15,7 +15,6 @@ import org.lwjgl.opencl.CL10;
 import java.nio.FloatBuffer;
 
 import static org.lwjgl.opencl.CL10.*;
-import static org.lwjgl.system.MemoryUtil.NULL;
 
 /*
     Take from http://forum.lwjgl.org/index.php?topic=6521.0

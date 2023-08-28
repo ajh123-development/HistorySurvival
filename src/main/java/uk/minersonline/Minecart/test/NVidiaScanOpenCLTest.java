@@ -1,6 +1,6 @@
 package uk.minersonline.Minecart.test;
 
-import uk.minersonline.Minecart.dc.impl.opencl.*;
+import uk.minersonline.Minecart.terrain.impl.opencl.*;
 import org.lwjgl.opencl.CL;
 
 public final class NVidiaScanOpenCLTest {
