@@ -29,24 +29,22 @@ public class RenderingEngine {
 	}
 
 	public void render()
-	{	
-		Camera.getInstance().update();
-		
+	{
 		Default.clearScreen();
 		
 		//skydome.render();
-
-		//dcWrapper.update();
 		//dcWrapper.render();
-
-		chunkOctreeWrapper.update();
 		chunkOctreeWrapper.render();
 		
 		// draw into OpenGL window
 		window.render();
 	}
 	
-	public void update(){}
+	public void update(){
+		Camera.getInstance().update();
+		//dcWrapper.update();
+		chunkOctreeWrapper.update();
+	}
 	
 	public void shutdown(){
 		chunkOctreeWrapper.cleanUp();
