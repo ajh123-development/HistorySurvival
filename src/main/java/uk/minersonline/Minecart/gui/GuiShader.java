@@ -1,5 +1,8 @@
 package uk.minersonline.Minecart.gui;
 
+import imgui.ImGui;
+import imgui.ImGuiIO;
+import uk.minersonline.Minecart.core.math.Vec2f;
 import uk.minersonline.Minecart.core.scene.GameObject;
 import uk.minersonline.Minecart.core.shaders.Shader;
 import uk.minersonline.Minecart.core.utils.ResourceLoader;
@@ -7,6 +10,7 @@ import uk.minersonline.Minecart.core.utils.ResourceLoader;
 public class GuiShader extends Shader {
 
 	private static GuiShader instance = null;
+	private final Vec2f scale;
 
 	public static GuiShader getInstance()
 	{
@@ -22,16 +26,18 @@ public class GuiShader extends Shader {
 		super();
 
 		addVertexShader(ResourceLoader.loadShader("shaders/gui_VS.glsl"));
-		addFragmentShader(ResourceLoader.loadShader("shaders/guie_FS.glsl"));
+		addFragmentShader(ResourceLoader.loadShader("shaders/gui_FS.glsl"));
 		compileShader();
 
-		addUniform("modelViewProjectionMatrix");
-		addUniform("worldMatrix");
+		addUniform("scale");
+		scale = new Vec2f();
 	}
 
 	public void updateUniforms(GameObject object)
 	{
-		setUniform("modelViewProjectionMatrix", object.getTransform().getModelViewProjectionMatrix());
-		setUniform("worldMatrix", object.getTransform().getWorldMatrix());
+		ImGuiIO io = ImGui.getIO();
+		scale.X = 2.0f / io.getDisplaySizeX();
+		scale.Y = -2.0f / io.getDisplaySizeY();
+		setUniform("scale", scale);
 	}
 }

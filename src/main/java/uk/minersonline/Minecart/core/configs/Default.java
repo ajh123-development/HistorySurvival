@@ -11,14 +11,17 @@ public class Default implements RenderConfig{
 	}
 
 	public void disable() {
-		
+		glDisable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_FRAMEBUFFER_SRGB);
 	}
 	
 	public static void init() {
-		glFrontFace(GL_CW);				
+		glFrontFace(GL_CW);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
-		glEnable(GL_DEPTH_TEST);     	
+		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_FRAMEBUFFER_SRGB);
 	}

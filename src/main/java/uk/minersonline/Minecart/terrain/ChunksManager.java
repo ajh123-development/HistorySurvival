@@ -225,7 +225,7 @@ public class ChunksManager {
                     ConstructChunkNodeData(filteredNode);
             long time2 = System.nanoTime();
             if(result) {
-                System.out.println("created chunk " + filteredNode + " in " + INT_FORMATTER.format((time2 - time1) / (long) 1E3));
+//                System.out.println("created chunk " + filteredNode + " in " + INT_FORMATTER.format((time2 - time1) / (long) 1E3));
             }
 
             if (filteredNode.renderMesh !=null || (filteredNode.chunkBorderNodes !=null && filteredNode.chunkBorderNodes.size()> 0)) {
@@ -327,17 +327,17 @@ public class ChunksManager {
     }
 
     private boolean filterSeamNode(int childIndex, Vec3i seamBounds, Vec3i min, Vec3i max) {
-        switch (childIndex) {
-            case 0: return max.x == seamBounds.x || max.y == seamBounds.y || max.z == seamBounds.z;
-            case 1: return min.z == seamBounds.z;
-            case 2: return min.y == seamBounds.y;
-            case 3: return min.y == seamBounds.y || min.z == seamBounds.z;
-            case 4: return min.x == seamBounds.x;
-            case 5: return min.x == seamBounds.x || min.z == seamBounds.z;
-            case 6: return min.x == seamBounds.x || min.y == seamBounds.y;
-            case 7: return min.equals(seamBounds);
-        }
-        return false;
+        return switch (childIndex) {
+            case 0 -> max.x == seamBounds.x || max.y == seamBounds.y || max.z == seamBounds.z;
+            case 1 -> min.z == seamBounds.z;
+            case 2 -> min.y == seamBounds.y;
+            case 3 -> min.y == seamBounds.y || min.z == seamBounds.z;
+            case 4 -> min.x == seamBounds.x;
+            case 5 -> min.x == seamBounds.x || min.z == seamBounds.z;
+            case 6 -> min.x == seamBounds.x || min.y == seamBounds.y;
+            case 7 -> min.equals(seamBounds);
+            default -> false;
+        };
     }
 
     private void findActiveNodes(ChunkNode node, ChunkNode referenceNode, List<ChunkNode> neighbourActiveNodes){

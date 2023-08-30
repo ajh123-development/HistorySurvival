@@ -15,7 +15,7 @@ public class Texture2D {
 	public Texture2D(){}
 
 	public Texture2D(int width, int height, ByteBuffer buf) {
-		generateTexture(width, height, buf);
+		id = ImageLoader.createTexture(width, height, 4, buf);
 	}
 
 

@@ -15,13 +15,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.stb.STBImageWrite.stbi_write_tga;
 
 public class ImageLoader {
 
-public static int loadImage(String file) {
-		
+    public static int loadImage(String file) {
 		ByteBuffer imageBuffer;
         try {
             imageBuffer = ioResourceToByteBuffer(file, 128 * 128);
@@ -48,23 +48,33 @@ public static int loadImage(String file) {
         int height = h.get(0);
         int comp = c.get(0);
         
-        int texId = glGenTextures();
-
-        glBindTexture(GL_TEXTURE_2D, texId);
-        
-        if (comp == 3) {
-            if ((width & 3) != 0) {
-                glPixelStorei(GL_UNPACK_ALIGNMENT, 2 - (width & 1));
-            }
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-        } else {
-        	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-        }
+        int texId = createTexture(width, height, comp, image);
         
         stbi_image_free(image);
         
 		return texId;
 	}
+
+    public static int createTexture(int width, int height, int comp, ByteBuffer buf) {
+        int textureId = glGenTextures();
+
+        glBindTexture(GL_TEXTURE_2D, textureId);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        if (comp == 3) {
+            if ((width & 3) != 0) {
+                glPixelStorei(GL_UNPACK_ALIGNMENT, 2 - (width & 1));
+            }
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, buf);
+        } else {
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+        }
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        return textureId;
+    }
 
     public static ByteBuffer floatArray2ByteArray(float[] values){
         ByteBuffer buffer = ByteBuffer.allocate(4 * values.length);

@@ -1,11 +1,13 @@
 package uk.minersonline.Minecart.core.kernel;
 
+import uk.minersonline.Minecart.core.configs.Default;
 import uk.minersonline.Minecart.core.utils.Constants;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
+import uk.minersonline.Minecart.gui.IGuiInstance;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -20,35 +22,32 @@ import static org.lwjgl.glfw.GLFW.*;
 public class CoreEngine {
 
 	private static int fps;
-	private static float framerate = 200;
-	private static float frameTime = 1.0f/framerate;
+	private static final float framerate = 200;
+	private static final float frameTime = 1.0f / framerate;
 	private boolean isRunning;
 	private RenderingEngine renderingEngine;
-	
+
 	@SuppressWarnings("unused")
 	private GLFWErrorCallback errorCallback;
-	
-	public void createWindow(int width, int height, String title)
-	{
+
+	public void createWindow(int width, int height, String title, IGuiInstance gui) {
 		glfwInit();
-		
+
 		glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 		
 		Window.getInstance().create(width, height, title);
 		
-		renderingEngine = new RenderingEngine();
+		renderingEngine = new RenderingEngine(gui);
 		
 		getDeviceProperties();
 	}
 	
-	public void init()
-	{
-		uk.minersonline.Minecart.core.configs.Default.init();
+	public void init() {
+		Default.init();
 		renderingEngine.init();
 	}
 	
-	public void start()
-	{
+	public void start() {
 		if(isRunning)
 			return;
 		
@@ -56,7 +55,6 @@ public class CoreEngine {
 	}
 
 	public void run() {
-		
 		this.isRunning = true;
 		
 		int frames = 0;
@@ -66,8 +64,7 @@ public class CoreEngine {
 		double unprocessedTime = 0;
 		
 		// Rendering Loop
-		while(isRunning)
-		{
+		while(isRunning) {
 			boolean render = false;
 			
 			long startTime = System.nanoTime();
@@ -76,68 +73,54 @@ public class CoreEngine {
 			
 			unprocessedTime += passedTime / (double) Constants.NANOSECOND;
 			frameCounter += passedTime;
-		
-			
-			while(unprocessedTime > frameTime)
-			{
 
+			while(unprocessedTime > frameTime) {
 				render = true;
 				unprocessedTime -= frameTime;
 				
-				if(Window.getInstance().isCloseRequested())
+				if(Window.getInstance().isCloseRequested()) {
 					stop();
+				}
 				
 				update();
 				
-				if(frameCounter >= Constants.NANOSECOND)
-				{
+				if(frameCounter >= Constants.NANOSECOND) {
 					setFps(frames);
 					frames = 0;
 					frameCounter = 0;
 				}
 			}
-			if(render)
-			{
+			if(render) {
 				render();
 				frames++;
 			}
-			else
-			{
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}		
 		}
 		
 		cleanUp();	
 	}
 
-	private void stop()
-	{
+	private void stop() {
 		if(!isRunning)
 			return;
 		
 		isRunning = false;
 	}
 	
-	private void render(){
+	private void render() {
 		renderingEngine.render();
 	}
 	
-	private void update()
-	{
+	private void update() {
 		Input.getInstance().update();
 		Camera.getInstance().update();
 		renderingEngine.update();
 	}
 	
-	private void cleanUp()
-	{
+	private void cleanUp() {
 		renderingEngine.shutdown();
 		Window.getInstance().dispose();
 		glfwTerminate();
+		System.exit(0);
 	}
 	
 	private void getDeviceProperties(){

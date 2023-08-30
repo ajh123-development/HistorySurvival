@@ -1,5 +1,7 @@
 package uk.minersonline.Minecart.core.kernel;
 
+import imgui.ImGui;
+import imgui.ImGuiIO;
 import uk.minersonline.Minecart.core.utils.ImageLoader;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.opengl.GL;
@@ -66,8 +68,7 @@ public class Window {
 		glfwShowWindow(window);
 	}
 	
-	public void render()
-	{
+	public void render() {
 		glfwSwapBuffers(window);
 	}
 	
@@ -81,7 +82,7 @@ public class Window {
 		return glfwWindowShouldClose(window);
 	}
 	
-	public void setWindowSize(int x, int y){
+	public void setWindowSize(int x, int y) {
 		glfwSetWindowSize(window, x, y);
 		setHeight(y);
 		setWidth(x);

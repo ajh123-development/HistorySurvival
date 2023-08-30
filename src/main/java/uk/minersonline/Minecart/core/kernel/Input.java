@@ -1,5 +1,8 @@
 package uk.minersonline.Minecart.core.kernel;
 
+import imgui.ImGui;
+import imgui.ImGuiIO;
+import imgui.flag.ImGuiKey;
 import uk.minersonline.Minecart.core.math.Vec2f;
 import org.lwjgl.glfw.*;
 
@@ -17,13 +20,13 @@ public class Input {
 	
 	private static Input instance = null;
 
-	private ArrayList<Integer> pushedKeys = new ArrayList<Integer>();
-	private ArrayList<Integer> keysHolding = new ArrayList<Integer>();
-	private ArrayList<Integer> releasedKeys = new ArrayList<Integer>();
+	private final ArrayList<Integer> pushedKeys = new ArrayList<>();
+	private final ArrayList<Integer> keysHolding = new ArrayList<>();
+	private final ArrayList<Integer> releasedKeys = new ArrayList<>();
 	
-	private ArrayList<Integer> pushedButtons = new ArrayList<Integer>();
-	private ArrayList<Integer> buttonsHolding = new ArrayList<Integer>();
-	private ArrayList<Integer> releasedButtons = new ArrayList<Integer>();
+	private final ArrayList<Integer> pushedButtons = new ArrayList<>();
+	private final ArrayList<Integer> buttonsHolding = new ArrayList<>();
+	private final ArrayList<Integer> releasedButtons = new ArrayList<>();
 	
 	private Vec2f cursorPosition;
 	private Vec2f lockedCursorPosition;
@@ -36,44 +39,72 @@ public class Input {
 	}
 	
 	@SuppressWarnings("unused")
-	private GLFWKeyCallback keyCallback;
-	 
+	private final GLFWKeyCallback keyCallback;
 	@SuppressWarnings("unused")
-	private GLFWCursorPosCallback cursorPosCallback;
+	private final GLFWCharCallback charCallback;
+	@SuppressWarnings("unused")
+	private final GLFWCursorPosCallback cursorPosCallback;
 	
 	@SuppressWarnings("unused")
-	private GLFWMouseButtonCallback mouseButtonCallback;
+	private final GLFWMouseButtonCallback mouseButtonCallback;
 	
 	@SuppressWarnings("unused")
-	private GLFWScrollCallback scrollCallback;
+	private final GLFWScrollCallback scrollCallback;
 	
 	@SuppressWarnings("unused")
-	private GLFWFramebufferSizeCallback framebufferSizeCallback;
+	private final GLFWFramebufferSizeCallback framebufferSizeCallback;
 	
-	public static Input getInstance() 
-	{
-	    if(instance == null) 
-	    {
+	public static Input getInstance() {
+	    if(instance == null) {
 	    	instance = new Input();
 	    }
-	      return instance;
+		return instance;
 	}
 	
-	protected Input()
-	{
+	protected Input() {
+		Window window = Window.getInstance();
+		ImGuiIO io = ImGui.getIO();
+		io.setKeyMap(ImGuiKey.Tab, GLFW_KEY_TAB);
+		io.setKeyMap(ImGuiKey.LeftArrow, GLFW_KEY_LEFT);
+		io.setKeyMap(ImGuiKey.RightArrow, GLFW_KEY_RIGHT);
+		io.setKeyMap(ImGuiKey.UpArrow, GLFW_KEY_UP);
+		io.setKeyMap(ImGuiKey.DownArrow, GLFW_KEY_DOWN);
+		io.setKeyMap(ImGuiKey.PageUp, GLFW_KEY_PAGE_UP);
+		io.setKeyMap(ImGuiKey.PageDown, GLFW_KEY_PAGE_DOWN);
+		io.setKeyMap(ImGuiKey.Home, GLFW_KEY_HOME);
+		io.setKeyMap(ImGuiKey.End, GLFW_KEY_END);
+		io.setKeyMap(ImGuiKey.Insert, GLFW_KEY_INSERT);
+		io.setKeyMap(ImGuiKey.Delete, GLFW_KEY_DELETE);
+		io.setKeyMap(ImGuiKey.Backspace, GLFW_KEY_BACKSPACE);
+		io.setKeyMap(ImGuiKey.Space, GLFW_KEY_SPACE);
+		io.setKeyMap(ImGuiKey.Enter, GLFW_KEY_ENTER);
+		io.setKeyMap(ImGuiKey.Escape, GLFW_KEY_ESCAPE);
+		io.setKeyMap(ImGuiKey.KeyPadEnter, GLFW_KEY_KP_ENTER);
+
 		cursorPosition = new Vec2f();
 		
 		glfwSetFramebufferSizeCallback(Window.getInstance().getWindow(), (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
 		    @Override
 		    public void invoke(long window, int width, int height) {
+				ImGuiIO imGuiIO = ImGui.getIO();
+				imGuiIO.setDisplaySize(width, height);
 		        Window.getInstance().setWindowSize(width, height);
 		    }
 		}));
 		
 		glfwSetKeyCallback(Window.getInstance().getWindow(), (keyCallback = new GLFWKeyCallback() {
-
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
+				if (action == GLFW_PRESS) {
+					io.setKeysDown(key, true);
+				} else if (action == GLFW_RELEASE) {
+					io.setKeysDown(key, false);
+				}
+				io.setKeyCtrl(io.getKeysDown(GLFW_KEY_LEFT_CONTROL) || io.getKeysDown(GLFW_KEY_RIGHT_CONTROL));
+				io.setKeyShift(io.getKeysDown(GLFW_KEY_LEFT_SHIFT) || io.getKeysDown(GLFW_KEY_RIGHT_SHIFT));
+				io.setKeyAlt(io.getKeysDown(GLFW_KEY_LEFT_ALT) || io.getKeysDown(GLFW_KEY_RIGHT_ALT));
+				io.setKeySuper(io.getKeysDown(GLFW_KEY_LEFT_SUPER) || io.getKeysDown(GLFW_KEY_RIGHT_SUPER));
+
             	if (action == GLFW_PRESS){
             		if (!pushedKeys.contains(key)){
             			pushedKeys.add(key);
@@ -82,7 +113,7 @@ public class Input {
                 }
             	
                 if (action == GLFW_RELEASE){
-                	keysHolding.remove(new Integer(key));
+                	keysHolding.remove(Integer.valueOf(key));
                 	releasedKeys.add(key);
                 }
 
@@ -96,10 +127,19 @@ public class Input {
 					glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 				}
             }
-        }));
-		
-		glfwSetMouseButtonCallback(Window.getInstance().getWindow(), (mouseButtonCallback = new GLFWMouseButtonCallback() {
+		}));
 
+		glfwSetCharCallback(window.getWindow(), (charCallback = new GLFWCharCallback() {
+			@Override
+			public void invoke(long window, int c) {
+				if (!io.getWantCaptureKeyboard()) {
+					return;
+				}
+				io.addInputCharacter(c);
+			}
+		}));
+
+		glfwSetMouseButtonCallback(Window.getInstance().getWindow(), (mouseButtonCallback = new GLFWMouseButtonCallback() {
             @Override
             public void invoke(long window, int button, int action, int mods) {
                 if (action == GLFW_PRESS){
@@ -111,30 +151,27 @@ public class Input {
                 
                 if (action == GLFW_RELEASE){
                 	releasedButtons.add(button);
-                	buttonsHolding.remove(new Integer(button));
+                	buttonsHolding.remove(Integer.valueOf(button));
                 }
-            }
+			}
 		}));
 		
 		glfwSetCursorPosCallback(Window.getInstance().getWindow(), (cursorPosCallback = new GLFWCursorPosCallback() {
-
             @Override
             public void invoke(long window, double xpos, double ypos) {
             	cursorPosition.setX((float) xpos);
             	cursorPosition.setY((float) ypos);
-            }
-
+			}
 		}));
 		
 		glfwSetScrollCallback(Window.getInstance().getWindow(), (scrollCallback = new GLFWScrollCallback() {
-			
 			@Override
 			public void invoke(long window, double xoffset, double yoffset) {
 				setScrollOffset((float) yoffset);
 			}
 		}));
 	}
-	
+
 	public void update() {
 		setScrollOffset(0);
 		pushedKeys.clear();

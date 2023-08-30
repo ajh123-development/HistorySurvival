@@ -1,23 +1,29 @@
 package uk.minersonline.Minecart.core.buffers;
 
+import imgui.ImGui;
 import uk.minersonline.Minecart.core.model.Mesh;
+import uk.minersonline.Minecart.core.texturing.Texture2D;
 import uk.minersonline.Minecart.core.utils.BufferUtil;
 
 import imgui.ImDrawData;
+import uk.minersonline.Minecart.gui.IGuiInstance;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 public class GuiVBO implements VBO{
-
+	private Texture2D texture;
+	private Mesh guiMesh;
+	private final IGuiInstance guiInstance;
 	protected int vbo;
 	protected int ibo;
 	protected int vaoId;
 	protected int size;
 
-	public GuiVBO()
-	{
+	public GuiVBO(IGuiInstance guiInstance) {
+		this.guiInstance = guiInstance;
 		vbo = glGenBuffers();
 		ibo = glGenBuffers();
 		vaoId = glGenVertexArrays();
@@ -25,45 +31,53 @@ public class GuiVBO implements VBO{
 	}
 	
 	public void addData(Mesh mesh) {
-		if (mesh.getVertices() != null && mesh.getIndices() != null) {
-			size = mesh.getIndices().length;
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, false, ImDrawData.SIZEOF_IM_DRAW_VERT, 0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, false, ImDrawData.SIZEOF_IM_DRAW_VERT, 8);
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, true, ImDrawData.SIZEOF_IM_DRAW_VERT, 16);
 
-			glBindVertexArray(vaoId);
 
-			glBindBuffer(GL_ARRAY_BUFFER, vbo);
-			glBufferData(GL_ARRAY_BUFFER, BufferUtil.createFlippedBufferAOS(mesh.getVertices()), GL_STATIC_DRAW);
-
-
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, BufferUtil.createFlippedBuffer(mesh.getIndices()), GL_STATIC_DRAW);
-
-			glVertexAttribPointer(0, 2, GL_FLOAT, false, ImDrawData.SIZEOF_IM_DRAW_VERT, 0);
-			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 2, GL_FLOAT, false, ImDrawData.SIZEOF_IM_DRAW_VERT, 8);
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, true, ImDrawData.SIZEOF_IM_DRAW_VERT, 16);
-
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindVertexArray(0);
-		}
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+		guiMesh = mesh;
 	}
 	
 	@Override
-	public void draw(boolean wireframe)
-	{
-		glBindVertexArray(vaoId);
+	public void draw(boolean wireframe) {
+		if (guiInstance != null) {
+			guiInstance.drawGui();
+		}
 
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
+		if (guiMesh != null) {
+			glBindVertexArray(vaoId);
 
-		glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
+			ImDrawData drawData = ImGui.getDrawData();
+			int numLists = drawData.getCmdListsCount();
+			for (int i = 0; i < numLists; i++) {
+				glBufferData(GL_ARRAY_BUFFER, drawData.getCmdListVtxBufferData(i), GL_STREAM_DRAW);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, drawData.getCmdListIdxBufferData(i), GL_STREAM_DRAW);
 
-		glBindVertexArray(0);
+				int numCmds = drawData.getCmdListCmdBufferSize(i);
+				for (int j = 0; j < numCmds; j++) {
+					final int elemCount = drawData.getCmdListCmdBufferElemCount(i, j);
+					final int idxBufferOffset = drawData.getCmdListCmdBufferIdxOffset(i, j);
+					final int indices = idxBufferOffset * ImDrawData.SIZEOF_IM_DRAW_IDX;
+
+					texture.bind();
+					glDrawElements(GL_TRIANGLES, elemCount, GL_UNSIGNED_SHORT, indices);
+				}
+			}
+		}
+	}
+
+	public void setTexture(Texture2D texture) {
+		this.texture = texture;
 	}
 
 	@Override
