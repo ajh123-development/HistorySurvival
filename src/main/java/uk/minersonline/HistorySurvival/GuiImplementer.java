@@ -11,15 +11,16 @@ import uk.minersonline.Minecart.core.kernel.Camera;
 import uk.minersonline.Minecart.core.kernel.Input;
 import uk.minersonline.Minecart.core.math.Vec2f;
 import uk.minersonline.Minecart.core.math.Vec3f;
+import uk.minersonline.Minecart.gui.ControlsManager;
 import uk.minersonline.Minecart.gui.IGuiInstance;
 
 public class GuiImplementer implements IGuiInstance {
 	private static int location = 0;
-	private static ImBoolean FILL_POLYGON = new ImBoolean(false);
 
 	@Override
 	public void drawGui() {
 		ImGui.newFrame();
+		ImGui.setNextWindowPos(0, 0);
 		ImGui.showDemoWindow();
 
 		ImGui.setNextWindowPos(0, 0, ImGuiCond.Always);
@@ -60,9 +61,12 @@ public class GuiImplementer implements IGuiInstance {
 			Vec3f position = Camera.getInstance().getPosition();
 			ImGui.text("Camera Position: (%.1f,%.1f,%.1f)".formatted(position.X, position.Y, position.Z));
 			ImGui.separator();
-			if (ImGui.checkbox("Fill polygons", FILL_POLYGON)) {
-//				WorldRenderer.FILL_POLYGON = FILL_POLYGON.get();
-			}
+			ImGui.text("Drawing");
+			ImGui.checkbox("Draw Wireframe", ControlsManager.DrawChunkWireframe);
+			ImGui.checkbox("Draw Chunk Node Bounds", ControlsManager.DrawChunkNodeBounds);
+			ImGui.checkbox("Draw Chunk Seam Bounds", ControlsManager.DrawChunkSeamBounds);
+			ImGui.separator();
+			ImGui.text("Gameplay");
 			if (ImGui.beginPopupContextWindow()) {
 				if (ImGui.menuItem("Custom",       null, location == -1)) location = -1;
 				if (ImGui.menuItem("Center",       null, location == -2)) location = -2;
@@ -90,9 +94,10 @@ public class GuiImplementer implements IGuiInstance {
 		imGuiIO.setMouseDown(0, input.isButtonHolding(0));
 		imGuiIO.setMouseDown(1, input.isButtonHolding(1));
 
-		float scrollY = input.getScrollOffset();
-
-		imGuiIO.setMouseWheel(scrollY);
+		Vec2f scroll = input.getScrollOffset();
+		imGuiIO.setMouseWheel(scroll.Y);
+		imGuiIO.setMouseWheelH(scroll.X);
+		input.setScrollOffset(0, 0);
 
 		return imGuiIO.getWantCaptureMouse() || imGuiIO.getWantCaptureKeyboard();
 	}

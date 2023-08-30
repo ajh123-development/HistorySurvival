@@ -83,7 +83,7 @@ public class Camera {
 		cameraRotated = false;
 		
 
-		movAmt += (0.04f * Input.getInstance().getScrollOffset());
+		movAmt += (0.04f * Input.getInstance().getScrollOffset().getY());
 		movAmt = Math.max(0.02f, movAmt);
 		//movAmt = 1;
 		

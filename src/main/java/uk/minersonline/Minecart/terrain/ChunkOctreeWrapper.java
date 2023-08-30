@@ -18,6 +18,7 @@ import uk.minersonline.Minecart.core.renderer.RenderInfo;
 import uk.minersonline.Minecart.core.renderer.Renderer;
 import uk.minersonline.Minecart.core.scene.GameObject;
 import uk.minersonline.Minecart.core.utils.Constants;
+import uk.minersonline.Minecart.gui.ControlsManager;
 import uk.minersonline.Minecart.terrain.csg.CSGOperationsProcessor;
 import uk.minersonline.Minecart.terrain.csg.CpuCsgImpl;
 import uk.minersonline.Minecart.terrain.entities.DebugDrawBuffer;
@@ -96,7 +97,6 @@ public class ChunkOctreeWrapper extends GameObject {
         }
         chunksManager = new ChunksManager(voxelOctree, meshGenCtx, physics, camera, playerCollision, mortonCodesChunksMap);
         csgProcessor = new CSGOperationsProcessor(voxelOctree, meshGenCtx, camera, mortonCodesChunksMap);
-        logger.log(Level.SEVERE, "{0}={1}", new Object[]{"Initialise", "complete"});
     }
 
     public void update() {
@@ -116,29 +116,15 @@ public class ChunkOctreeWrapper extends GameObject {
             renderMesh(ray);
         }
 
-        if (Input.getInstance().isKeyHold(GLFW_KEY_F1)) {
-            sleep(200);
-            drawWireframe = !drawWireframe;
-        }
-        if (Input.getInstance().isKeyHold(GLFW_KEY_F2)) {
-            sleep(200);
-            drawNodeBounds = !drawNodeBounds;
-        }
-        if (Input.getInstance().isKeyHold(GLFW_KEY_F3)) {
-            sleep(200);
-            refreshMesh = !refreshMesh;
-        }
-        if (Input.getInstance().isKeyHold(GLFW_KEY_F4)) {
-            sleep(200);
-            drawSeamBounds = !drawSeamBounds;
-        }
-//        if (Input.getInstance().isKeyHold(GLFW_KEY_F6)) {
-//            Vec3f cam = Camera.getInstance().getPosition();
-//            sleep(200);
-//        }
-        if (Input.getInstance().isKeyHold(GLFW_KEY_F10)) {
-            sleep(200);
+        drawWireframe = ControlsManager.DrawChunkWireframe.get();
+        drawNodeBounds = ControlsManager.DrawChunkNodeBounds.get();
+        refreshMesh = ControlsManager.RefreshChunkMesh.get();
+        drawSeamBounds = ControlsManager.DrawChunkSeamBounds.get();
+        isAddOperation = ControlsManager.TerrainBuildMode.get();
+
+        if (ControlsManager.PlayerNoClip.get()) {
             physics.Physics_TogglePlayerNoClip();
+            ControlsManager.PlayerNoClip.set(false);
         }
         if (Input.getInstance().isKeyHold(GLFW_KEY_RIGHT_BRACKET)) {
             sleep(100);
@@ -151,15 +137,6 @@ public class ChunkOctreeWrapper extends GameObject {
         if (Input.getInstance().isKeyHold(GLFW_KEY_R)) {
             sleep(200);
             brushShape = RenderShape.values()[(brushShape.ordinal() + 1) % 2];
-        }
-        if (Input.getInstance().isKeyHold(GLFW_KEY_M)) {
-            sleep(200);
-            isAddOperation = !isAddOperation;
-        }
-
-        glPolygonMode(GL_FRONT_AND_BACK, drawWireframe ? GL_LINE : GL_FILL);
-        if(!drawWireframe){
-            glDisable(GL_CULL_FACE);
         }
     }
 

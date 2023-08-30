@@ -11,6 +11,8 @@ import uk.minersonline.Minecart.gui.GuiRenderer;
 import uk.minersonline.Minecart.gui.IGuiInstance;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_FILL;
 
 /**
  * 
@@ -21,8 +23,8 @@ import static org.lwjgl.glfw.GLFW.*;
  *
  */
 public class CoreEngine {
-	private final int targetFps = 60;
-	private final int targetUps = 1000;
+	private int targetFps;
+	private int targetUps;
 	private boolean isRunning;
 	private RenderingEngine renderingEngine;
 	private IGuiInstance guiInstance;
@@ -31,12 +33,14 @@ public class CoreEngine {
 	@SuppressWarnings("unused")
 	private GLFWErrorCallback errorCallback;
 
-	public void createWindow(int width, int height, String title, IGuiInstance gui) {
-		glfwInit();
+	public void createWindow(WindowConfig config, IGuiInstance gui) {
+		targetFps = config.getTargetFps();
+		targetUps = config.getTargetUps();
 
+		glfwInit();
 		glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 		
-		Window.getInstance().create(width, height, title);
+		Window.getInstance().create(config);
 		
 		renderingEngine = new RenderingEngine();
 		guiInstance = gui;
@@ -97,6 +101,7 @@ public class CoreEngine {
 
 			if (targetFps <= 0 || deltaFps >= 1) {
 				render();
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 				guiRenderer.render(guiInstance);
 				deltaFps--;
 				// draw into OpenGL window

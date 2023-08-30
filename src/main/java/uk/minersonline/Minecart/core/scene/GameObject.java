@@ -4,7 +4,10 @@
 
  import java.util.HashMap;
 
-public class GameObject{
+ import static org.lwjgl.opengl.GL11.*;
+ import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+
+ public class GameObject{
 	protected boolean drawWireframe = false;
 	protected boolean refreshMesh = true;
 	private HashMap<String, Component> components;
@@ -38,6 +41,10 @@ public class GameObject{
 	
 	public void render()
 	{
+		glPolygonMode(GL_FRONT_AND_BACK, drawWireframe ? GL_LINE : GL_FILL);
+		if(!drawWireframe){
+			glDisable(GL_CULL_FACE);
+		}
 		for (String key : components.keySet()) {
 			components.get(key).render();
 		}

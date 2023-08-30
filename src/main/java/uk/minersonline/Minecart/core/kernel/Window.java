@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.GL_DONT_CARE;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 
 /**
@@ -35,17 +36,18 @@ public class Window {
 	
 	public void init(){}
 	
-	public void create(int width, int height, String title) {
-		setWidth(width);
-		setHeight(height);
+	public void create(WindowConfig config) {
+		setWidth(config.getDefaultWidth());
+		setHeight(config.getDefaultHeight());
 		
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);	
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);	
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);	
-		
-		window = glfwCreateWindow(width, height, title, 0, 0);
-		
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+		window = glfwCreateWindow(width, height, config.getTitle(), 0, 0);
+		glfwSetWindowSizeLimits(window, config.getMinWidth(), config.getMinHeight(), GL_DONT_CARE, GL_DONT_CARE);
+
 		if(window == 0) {
 		    throw new RuntimeException("Failed to create window");
 		}

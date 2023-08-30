@@ -28,9 +28,9 @@ public class Input {
 	private final ArrayList<Integer> buttonsHolding = new ArrayList<>();
 	private final ArrayList<Integer> releasedButtons = new ArrayList<>();
 	
-	private Vec2f cursorPosition;
-	private Vec2f lockedCursorPosition;
-	private float scrollOffset;
+	private Vec2f cursorPosition = new Vec2f(0, 0);
+	private Vec2f lockedCursorPosition = new Vec2f(0, 0);
+	private Vec2f scrollOffset = new Vec2f(0, 0);
 	
 	private boolean pause = false;
 	private boolean showCursor;
@@ -81,8 +81,6 @@ public class Input {
 		io.setKeyMap(ImGuiKey.Escape, GLFW_KEY_ESCAPE);
 		io.setKeyMap(ImGuiKey.KeyPadEnter, GLFW_KEY_KP_ENTER);
 
-		cursorPosition = new Vec2f();
-		
 		glfwSetFramebufferSizeCallback(Window.getInstance().getWindow(), (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
 		    @Override
 		    public void invoke(long window, int width, int height) {
@@ -115,7 +113,7 @@ public class Input {
                 }
 
 				if(keysHolding.contains(GLFW_KEY_TAB)) {
-					lockedCursorPosition = new Vec2f(cursorPosition);
+					lockedCursorPosition.set(cursorPosition.X, cursorPosition.Y);
 					showCursor = !showCursor;
 					glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 				}
@@ -164,13 +162,13 @@ public class Input {
 		glfwSetScrollCallback(Window.getInstance().getWindow(), (scrollCallback = new GLFWScrollCallback() {
 			@Override
 			public void invoke(long window, double xoffset, double yoffset) {
-				setScrollOffset((float) yoffset);
+				setScrollOffset((float) xoffset, (float) yoffset);
 			}
 		}));
 	}
 
 	public void update() {
-		setScrollOffset(0);
+//		setScrollOffset(new Vec2f(0, 0));
 		pushedKeys.clear();
 		releasedKeys.clear();
 		pushedButtons.clear();
@@ -243,12 +241,12 @@ public class Input {
 		return buttonsHolding;
 	}
 
-	public float getScrollOffset() {
+	public Vec2f getScrollOffset() {
 		return scrollOffset;
 	}
 
-	public void setScrollOffset(float scrollOffset) {
-		this.scrollOffset = scrollOffset;
+	public void setScrollOffset(float x, float y) {
+		this.scrollOffset.set(x, y);
 	}
 
 	public ArrayList<Integer> getKeysHolding() {
