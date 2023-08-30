@@ -25,8 +25,7 @@ public class Window {
 	private int width;
 	private int height;
 	
-	public static Window getInstance() 
-	{
+	public static Window getInstance() {
 	    if(instance == null) 
 	    {
 	    	instance = new Window();
@@ -36,8 +35,7 @@ public class Window {
 	
 	public void init(){}
 	
-	public void create(int width, int height, String title)
-	{
+	public void create(int width, int height, String title) {
 		setWidth(width);
 		setHeight(height);
 		
@@ -72,13 +70,11 @@ public class Window {
 		glfwSwapBuffers(window);
 	}
 	
-	public void dispose()
-	{
+	public void dispose() {
 		glfwDestroyWindow(window);
 	}
 	
-	public boolean isCloseRequested()
-	{
+	public boolean isCloseRequested() {
 		return glfwWindowShouldClose(window);
 	}
 	
@@ -89,8 +85,7 @@ public class Window {
 		Camera.getInstance().setProjection(70, x, y);
 	}
 	
-	public int getWidth()
-	{
+	public int getWidth() {
 		return width;
 	}
 	
@@ -98,8 +93,7 @@ public class Window {
 		this.width = width;
 	}
 	
-	public int getHeight()
-	{
+	public int getHeight() {
 		return height;
 	}
 	

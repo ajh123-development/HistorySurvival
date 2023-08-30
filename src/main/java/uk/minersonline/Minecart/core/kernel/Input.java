@@ -44,7 +44,7 @@ public class Input {
 	private final GLFWCharCallback charCallback;
 	@SuppressWarnings("unused")
 	private final GLFWCursorPosCallback cursorPosCallback;
-	
+
 	@SuppressWarnings("unused")
 	private final GLFWMouseButtonCallback mouseButtonCallback;
 	
@@ -95,24 +95,21 @@ public class Input {
 		glfwSetKeyCallback(Window.getInstance().getWindow(), (keyCallback = new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
-				if (action == GLFW_PRESS) {
-					io.setKeysDown(key, true);
-				} else if (action == GLFW_RELEASE) {
-					io.setKeysDown(key, false);
-				}
 				io.setKeyCtrl(io.getKeysDown(GLFW_KEY_LEFT_CONTROL) || io.getKeysDown(GLFW_KEY_RIGHT_CONTROL));
 				io.setKeyShift(io.getKeysDown(GLFW_KEY_LEFT_SHIFT) || io.getKeysDown(GLFW_KEY_RIGHT_SHIFT));
 				io.setKeyAlt(io.getKeysDown(GLFW_KEY_LEFT_ALT) || io.getKeysDown(GLFW_KEY_RIGHT_ALT));
 				io.setKeySuper(io.getKeysDown(GLFW_KEY_LEFT_SUPER) || io.getKeysDown(GLFW_KEY_RIGHT_SUPER));
 
             	if (action == GLFW_PRESS){
+					io.setKeysDown(key, true);
             		if (!pushedKeys.contains(key)){
             			pushedKeys.add(key);
             			keysHolding.add(key);
             		}
                 }
-            	
+
                 if (action == GLFW_RELEASE){
+					io.setKeysDown(key, false);
                 	keysHolding.remove(Integer.valueOf(key));
                 	releasedKeys.add(key);
                 }
@@ -148,14 +145,14 @@ public class Input {
                 		buttonsHolding.add(button);
                 	}
                 }
-                
+
                 if (action == GLFW_RELEASE){
                 	releasedButtons.add(button);
                 	buttonsHolding.remove(Integer.valueOf(button));
                 }
 			}
 		}));
-		
+
 		glfwSetCursorPosCallback(Window.getInstance().getWindow(), (cursorPosCallback = new GLFWCursorPosCallback() {
             @Override
             public void invoke(long window, double xpos, double ypos) {
@@ -178,8 +175,6 @@ public class Input {
 		releasedKeys.clear();
 		pushedButtons.clear();
 		releasedButtons.clear();
-		
-		glfwPollEvents();
 	}
 	
 	public boolean isKeyPushed(int key)

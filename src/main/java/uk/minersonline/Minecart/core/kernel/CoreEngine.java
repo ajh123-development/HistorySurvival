@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
+import uk.minersonline.Minecart.gui.GuiRenderer;
 import uk.minersonline.Minecart.gui.IGuiInstance;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -20,12 +21,12 @@ import static org.lwjgl.glfw.GLFW.*;
  *
  */
 public class CoreEngine {
-
-	private static int fps;
-	private static final float framerate = 200;
-	private static final float frameTime = 1.0f / framerate;
+	private final int targetFps = 60;
+	private final int targetUps = 1000;
 	private boolean isRunning;
 	private RenderingEngine renderingEngine;
+	private IGuiInstance guiInstance;
+	private GuiRenderer guiRenderer;
 
 	@SuppressWarnings("unused")
 	private GLFWErrorCallback errorCallback;
@@ -37,7 +38,9 @@ public class CoreEngine {
 		
 		Window.getInstance().create(width, height, title);
 		
-		renderingEngine = new RenderingEngine(gui);
+		renderingEngine = new RenderingEngine();
+		guiInstance = gui;
+		guiRenderer = new GuiRenderer();
 		
 		getDeviceProperties();
 	}
@@ -56,46 +59,52 @@ public class CoreEngine {
 
 	public void run() {
 		this.isRunning = true;
-		
-		int frames = 0;
-		long frameCounter = 0;
-		
-		long lastTime = System.nanoTime();
-		double unprocessedTime = 0;
-		
-		// Rendering Loop
-		while(isRunning) {
-			boolean render = false;
-			
-			long startTime = System.nanoTime();
-			long passedTime = startTime - lastTime;
-			lastTime = startTime;
-			
-			unprocessedTime += passedTime / (double) Constants.NANOSECOND;
-			frameCounter += passedTime;
+		update(0);
 
-			while(unprocessedTime > frameTime) {
-				render = true;
-				unprocessedTime -= frameTime;
-				
-				if(Window.getInstance().isCloseRequested()) {
-					stop();
-				}
-				
-				update();
-				
-				if(frameCounter >= Constants.NANOSECOND) {
-					setFps(frames);
-					frames = 0;
-					frameCounter = 0;
+		long initialTime = System.currentTimeMillis();
+		float timeU = 1000.0f / targetUps;
+		float timeR = targetFps > 0 ? 1000.0f / targetFps : 0;
+		float deltaUpdate = 0;
+		float deltaFps = 0;
+
+		long updateTime = initialTime;
+		while (isRunning) {
+			glfwPollEvents();
+
+
+			if (Window.getInstance().isCloseRequested()) {
+				stop();
+			}
+
+			long now = System.currentTimeMillis();
+			deltaUpdate += (now - initialTime) / timeU;
+			deltaFps += (now - initialTime) / timeR;
+
+			if (targetFps <= 0 || deltaFps >= 1) {
+				Input.getInstance().update();
+				boolean inputConsumed = guiInstance.handleGuiInput();
+				if (!inputConsumed) {
+					Camera.getInstance().update();
 				}
 			}
-			if(render) {
+
+			if (deltaUpdate >= 1) {
+				long diffTimeMillis = now - updateTime;
+				update(diffTimeMillis);
+				updateTime = now;
+				deltaUpdate--;
+			}
+
+			if (targetFps <= 0 || deltaFps >= 1) {
 				render();
-				frames++;
+				guiRenderer.render(guiInstance);
+				deltaFps--;
+				// draw into OpenGL window
+				Window.getInstance().render();
 			}
+			initialTime = now;
 		}
-		
+
 		cleanUp();	
 	}
 
@@ -110,14 +119,13 @@ public class CoreEngine {
 		renderingEngine.render();
 	}
 	
-	private void update() {
-		Input.getInstance().update();
-		Camera.getInstance().update();
+	private void update(long diffTimeMillis) {
 		renderingEngine.update();
 	}
 	
 	private void cleanUp() {
 		renderingEngine.shutdown();
+		guiRenderer.cleanup();
 		Window.getInstance().dispose();
 		glfwTerminate();
 		System.exit(0);
@@ -150,17 +158,5 @@ public class CoreEngine {
 
 
 		System.out.println("GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS " + GL11.glGetInteger(GL43.GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS));
-	}
-
-	public static float getFrameTime() {
-		return frameTime;
-	}
-
-	public static int getFps() {
-		return fps;
-	}
-
-	public static void setFps(int fps) {
-		CoreEngine.fps = fps;
 	}
 }

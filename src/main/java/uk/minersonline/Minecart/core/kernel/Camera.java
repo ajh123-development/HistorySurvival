@@ -76,8 +76,7 @@ public class Camera {
 		forward.normalize();
 	}
 	
-	public void update()
-	{
+	public void update() {
 		setPreviousPosition(new Vec3f(position));
 		setPreviousForward(new Vec3f(forward));
 		cameraMoved = false;
@@ -126,8 +125,7 @@ public class Camera {
 		}
 		
 		// free mouse rotation
-		if(Input.getInstance().isShowCursor() && Input.getInstance().getLockedCursorPosition()!=null)
-		{
+		if(Input.getInstance().isShowCursor() && Input.getInstance().getLockedCursorPosition()!=null) {
 			float dy = Input.getInstance().getLockedCursorPosition().getY() - Input.getInstance().getCursorPosition().getY();
 			float dx = Input.getInstance().getLockedCursorPosition().getX() - Input.getInstance().getCursorPosition().getX();
 			

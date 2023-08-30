@@ -1,8 +1,6 @@
 package uk.minersonline.Minecart.core.kernel;
 
 import uk.minersonline.Minecart.core.configs.Default;
-import uk.minersonline.Minecart.gui.Gui;
-import uk.minersonline.Minecart.gui.IGuiInstance;
 import uk.minersonline.Minecart.terrain.ChunkOctreeWrapper;
 
 import static org.lwjgl.opengl.GL11.glViewport;
@@ -18,12 +16,10 @@ public class RenderingEngine {
 	private final Window window;
 	//private Skydome skydome;
 	//private DcWrapper dcWrapper;
-	private final Gui gui;
 	private final ChunkOctreeWrapper chunkOctreeWrapper;
 	
-	public RenderingEngine(IGuiInstance gui) {
+	public RenderingEngine() {
 		window = Window.getInstance();
-		this.gui = new Gui(gui);
 		//skydome = new Skydome();
 		//dcWrapper = new DcWrapper();
 		chunkOctreeWrapper = new ChunkOctreeWrapper();
@@ -40,15 +36,9 @@ public class RenderingEngine {
 		//skydome.render();
 		//dcWrapper.render();
 		chunkOctreeWrapper.render();
-
-		gui.render();
-		// draw into OpenGL window
-		window.render();
 	}
 	
 	public void update() {
-		gui.update();
-		Camera.getInstance().update();
 		//dcWrapper.update();
 		chunkOctreeWrapper.update();
 	}

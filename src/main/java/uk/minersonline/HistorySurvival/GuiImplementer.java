@@ -7,6 +7,9 @@ import imgui.ImVec2;
 import imgui.flag.ImGuiCond;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImBoolean;
+import uk.minersonline.Minecart.core.kernel.Camera;
+import uk.minersonline.Minecart.core.kernel.Input;
+import uk.minersonline.Minecart.core.math.Vec2f;
 import uk.minersonline.Minecart.core.math.Vec3f;
 import uk.minersonline.Minecart.gui.IGuiInstance;
 
@@ -29,10 +32,9 @@ public class GuiImplementer implements IGuiInstance {
 				ImGuiWindowFlags.NoFocusOnAppearing |
 				ImGuiWindowFlags.NoNav;
 
-		if (location >= 0)
-		{
-        float PAD = 10.0f;
-        ImGuiViewport viewport = ImGui.getMainViewport();
+		if (location >= 0) {
+        	float PAD = 10.0f;
+        	ImGuiViewport viewport = ImGui.getMainViewport();
 			ImVec2 work_pos = viewport.getWorkPos(); // Use work area to avoid menu-bar/task-bar, if any!
 			ImVec2 work_size = viewport.getWorkSize();
 			ImVec2 window_pos = new ImVec2(), window_pos_pivot = new ImVec2();
@@ -43,8 +45,7 @@ public class GuiImplementer implements IGuiInstance {
 			ImGui.setNextWindowPos(window_pos.x, window_pos.y, ImGuiCond.Always, window_pos_pivot.x, window_pos_pivot.y);
 			window_flags |= ImGuiWindowFlags.NoMove;
 		}
-		else if (location == -2)
-		{
+		else if (location == -2) {
 			// Center window
 			ImVec2 center = ImGui.getMainViewport().getCenter();
 			ImVec2 pivot = new ImVec2(0.5f, 0.5f);
@@ -56,15 +57,13 @@ public class GuiImplementer implements IGuiInstance {
 		if (ImGui.begin("History Survival Debug", new ImBoolean(true), window_flags)) {
 			ImGui.text("History Survival Debug");
 			ImGui.separator();
-//			Vector3f position = scene.getCamera().getPosition();
-			Vec3f position = new Vec3f(0, 0, 0);
+			Vec3f position = Camera.getInstance().getPosition();
 			ImGui.text("Camera Position: (%.1f,%.1f,%.1f)".formatted(position.X, position.Y, position.Z));
 			ImGui.separator();
 			if (ImGui.checkbox("Fill polygons", FILL_POLYGON)) {
 //				WorldRenderer.FILL_POLYGON = FILL_POLYGON.get();
 			}
-			if (ImGui.beginPopupContextWindow())
-			{
+			if (ImGui.beginPopupContextWindow()) {
 				if (ImGui.menuItem("Custom",       null, location == -1)) location = -1;
 				if (ImGui.menuItem("Center",       null, location == -2)) location = -2;
 				if (ImGui.menuItem("Top-left",     null, location == 0)) location = 0;
@@ -84,11 +83,16 @@ public class GuiImplementer implements IGuiInstance {
 	@Override
 	public boolean handleGuiInput() {
 		ImGuiIO imGuiIO = ImGui.getIO();
-//		MouseListener mouseInput = window.getMouseListener();
-//		Vector2f mousePos = mouseInput.getCurrentPos();
-//		imGuiIO.setMousePos(mousePos.x, mousePos.y);
-//		imGuiIO.setMouseDown(0, mouseInput.isLeftButtonPressed());
-//		imGuiIO.setMouseDown(1, mouseInput.isRightButtonPressed());
+		Input input = Input.getInstance();
+
+		Vec2f mousePos = input.getCursorPosition();
+		imGuiIO.setMousePos(mousePos.X, mousePos.Y);
+		imGuiIO.setMouseDown(0, input.isButtonHolding(0));
+		imGuiIO.setMouseDown(1, input.isButtonHolding(1));
+
+		float scrollY = input.getScrollOffset();
+
+		imGuiIO.setMouseWheel(scrollY);
 
 		return imGuiIO.getWantCaptureMouse() || imGuiIO.getWantCaptureKeyboard();
 	}
