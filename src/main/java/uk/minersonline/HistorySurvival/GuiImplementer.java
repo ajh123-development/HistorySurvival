@@ -67,6 +67,7 @@ public class GuiImplementer implements IGuiInstance {
 			ImGui.checkbox("Draw Chunk Seam Bounds", ControlsManager.DrawChunkSeamBounds);
 			ImGui.separator();
 			ImGui.text("Gameplay");
+			ImGui.checkbox("Is build mode", ControlsManager.TerrainBuildMode);
 			if (ImGui.beginPopupContextWindow()) {
 				if (ImGui.menuItem("Custom",       null, location == -1)) location = -1;
 				if (ImGui.menuItem("Center",       null, location == -2)) location = -2;

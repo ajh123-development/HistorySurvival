@@ -14,6 +14,10 @@
 
 * [Java-Leven](https://github.com/proton2/java-leven)
 
+## Contributing
+
+Want to contribute code? Check the [issues page](https://github.com/ajh123-development/HistorySurvival/issues)!
+
 ## License
 
 This project is licensed under the EULA - see the [EULA](./EULA.md) file for details.
