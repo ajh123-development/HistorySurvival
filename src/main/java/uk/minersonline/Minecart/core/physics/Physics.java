@@ -7,7 +7,7 @@ public interface Physics {
     float PLAYER_WIDTH = 48.f;
     float PLAYER_HEIGHT = 6;   // the capsule height is (2 * radius + height)
 
-    void Physics_TogglePlayerNoClip();
+    void Physics_TogglePlayerNoClip(boolean toggle);
     void Physics_PlayerJump();
     Vec3f getCollisionNorm();
     Vec3f getCollisionPos();

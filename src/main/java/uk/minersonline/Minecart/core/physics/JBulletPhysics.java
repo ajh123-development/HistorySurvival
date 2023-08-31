@@ -19,6 +19,7 @@ import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
 import uk.minersonline.Minecart.core.math.Vec3f;
+import uk.minersonline.Minecart.gui.ControlsManager;
 import uk.minersonline.Minecart.terrain.ChunkNode;
 import uk.minersonline.Minecart.terrain.entities.MeshBuffer;
 import uk.minersonline.Minecart.terrain.utils.Aabb;
@@ -340,8 +341,8 @@ public class JBulletPhysics implements Physics {
     }
 
     @Override
-    public void Physics_TogglePlayerNoClip() {
-        EnqueuePhysicsOperation(PhysicsOp_WorldUpdate, () -> g_player.noclip = !g_player.noclip);
+    public void Physics_TogglePlayerNoClip(boolean toggle) {
+        EnqueuePhysicsOperation(PhysicsOp_WorldUpdate, () -> g_player.noclip = toggle);
     }
 
     private void SpawnPlayerImpl(Vec3f origin) {

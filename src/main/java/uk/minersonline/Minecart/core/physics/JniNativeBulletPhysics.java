@@ -29,7 +29,7 @@ public class JniNativeBulletPhysics implements Physics {
 //    private volatile boolean g_rayCastPending = false;
 
     @Override
-    public void Physics_TogglePlayerNoClip() {
+    public void Physics_TogglePlayerNoClip(boolean toggle) {
     }
 
     @Override

@@ -53,7 +53,7 @@ public class ChunkOctreeWrapper extends GameObject {
     private final MeshGenerationContext meshGenCtx;
     private final ComputeContext ctx;
     private Physics physics;
-    private boolean playerCollision = false;
+    private boolean playerCollision = true;
     private int brushSize = 12;
     private RenderShape brushShape = RenderShape.RenderShape_Sphere;
     private boolean isAddOperation = false;
@@ -72,7 +72,7 @@ public class ChunkOctreeWrapper extends GameObject {
         camera.setPosition(new Vec3f(44.94776f,-4.30505f,-1229.6176f));
         camera.setForward(new Vec3f(-0.05808757f,-0.20107773f,0.9778515f));
         camera.setUp(new Vec3f(-0.011923655f,0.97957534f,0.20072392f));
-        if(playerCollision) {
+        if (playerCollision) {
             camera.setPhysics(physics);
         }
         VoxelOctree voxelOctree;
@@ -80,7 +80,7 @@ public class ChunkOctreeWrapper extends GameObject {
         Map<Vec4i, GpuOctree> octreeCache = new HashMap<>();
         Map<Vec4i, CpuOctree> cpuOctreeCache = new HashMap<>();
         Map<Long, ChunkNode> mortonCodesChunksMap = new HashMap<>();
-        if(ctx!=null) {
+        if (ctx!=null) {
             StringBuilder kernelBuildOptions = VoxelHelperUtils.createMainBuildOptions(meshGenCtx);
             kernelHolder = new KernelsHolder(ctx);
             kernelHolder.buildKernel(KernelNames.DENSITY, kernelBuildOptions);
@@ -118,14 +118,10 @@ public class ChunkOctreeWrapper extends GameObject {
 
         drawWireframe = ControlsManager.DrawChunkWireframe.get();
         drawNodeBounds = ControlsManager.DrawChunkNodeBounds.get();
-        refreshMesh = ControlsManager.RefreshChunkMesh.get();
+        refreshMesh = true;//ControlsManager.RefreshChunkMesh.get();
         drawSeamBounds = ControlsManager.DrawChunkSeamBounds.get();
         isAddOperation = ControlsManager.TerrainBuildMode.get();
 
-        if (ControlsManager.PlayerNoClip.get()) {
-            physics.Physics_TogglePlayerNoClip();
-            ControlsManager.PlayerNoClip.set(false);
-        }
         if (Input.getInstance().isKeyHold(GLFW_KEY_RIGHT_BRACKET)) {
             sleep(100);
             brushSize +=1;
@@ -243,14 +239,14 @@ public class ChunkOctreeWrapper extends GameObject {
             });
         }
 
-        RenderDebugCmdBuffer camRayCmds = new RenderDebugCmdBuffer();
-        camRayCmds.addWireCubeArrayCoords(Constants.Yellow, 1f, Frustum.getFrustum().getFrustumCorners());
-        DebugDrawBuffer buf = camRayCmds.UpdateDebugDrawBuffer();
-        DebugMeshVBO camRayBuff = new DebugMeshVBO();
-        camRayBuff.addData(buf);
-        Renderer debugRenderer = new Renderer(camRayBuff);
-        debugRenderer.setRenderInfo(new RenderInfo(new CW(), RenderDebugShader.getInstance()));
-        addComponent("frustum", debugRenderer);
+//        RenderDebugCmdBuffer camRayCmds = new RenderDebugCmdBuffer();
+//        camRayCmds.addWireCubeArrayCoords(Constants.Yellow, 1f, Frustum.getFrustum().getFrustumCorners());
+//        DebugDrawBuffer buf = camRayCmds.UpdateDebugDrawBuffer();
+//        DebugMeshVBO camRayBuff = new DebugMeshVBO();
+//        camRayBuff.addData(buf);
+//        Renderer debugRenderer = new Renderer(camRayBuff);
+//        debugRenderer.setRenderInfo(new RenderInfo(new CW(), RenderDebugShader.getInstance()));
+//        addComponent("frustum", debugRenderer);
     }
 
     private void renderDebugVoxelsBounds(ChunkNode node){

@@ -67,26 +67,25 @@ public class Camera {
 		Frustum.getFrustum().calculateFrustum(viewProjectionMatrix);
 	}
 	
-	private Camera(Vec3f position, Vec3f forward, Vec3f up)
-	{
+	private Camera(Vec3f position, Vec3f forward, Vec3f up) {
 		setPosition(position);
 		setForward(forward);
 		setUp(up);
 		up.normalize();
 		forward.normalize();
 	}
-	
-	public void update() {
+
+	public void input() {
 		setPreviousPosition(new Vec3f(position));
 		setPreviousForward(new Vec3f(forward));
 		cameraMoved = false;
 		cameraRotated = false;
-		
+
 
 		movAmt += (0.04f * Input.getInstance().getScrollOffset().getY());
 		movAmt = Math.max(0.02f, movAmt);
 		//movAmt = 1;
-		
+
 		if(Input.getInstance().isKeyHold(GLFW_KEY_W)) {
 			speed.Z = movAmt;
 			move(getForward(), movAmt);
@@ -110,7 +109,7 @@ public class Camera {
 		if(Input.getInstance().isKeyReleased(GLFW_KEY_A) || Input.getInstance().isKeyReleased(GLFW_KEY_D)) {
 			speed.X = 0.f;
 		}
-				
+
 		if(Input.getInstance().isKeyHold(GLFW_KEY_UP))
 			rotateX(-rotAmt/8f);
 		if(Input.getInstance().isKeyHold(GLFW_KEY_DOWN))
@@ -123,23 +122,23 @@ public class Camera {
 		if (Input.getInstance().isKeyHold(GLFW_KEY_SPACE)) {
 			velocity.set(0, 0, 0);
 		}
-		
+
 		// free mouse rotation
 		if(Input.getInstance().isShowCursor() && Input.getInstance().getLockedCursorPosition()!=null) {
 			float dy = Input.getInstance().getLockedCursorPosition().getY() - Input.getInstance().getCursorPosition().getY();
 			float dx = Input.getInstance().getLockedCursorPosition().getX() - Input.getInstance().getCursorPosition().getX();
-			
+
 			// y-axxis rotation
-			
+
 			if (dy != 0){
 				rotYstride = Math.abs(dy * 0.01f);
 				rotYamt = -dy;
 				rotYcounter = 0;
 				rotYInitiated = true;
 			}
-			
+
 			if (rotYInitiated ){
-				
+
 				// up-rotation
 				if (rotYamt < 0){
 					if (rotYcounter > rotYamt){
@@ -159,7 +158,7 @@ public class Camera {
 					else rotYInitiated = false;
 				}
 			}
-			
+
 			// x-axxis rotation
 			if (dx != 0){
 				rotXstride = Math.abs(dx * 0.01f);
@@ -167,9 +166,9 @@ public class Camera {
 				rotXcounter = 0;
 				rotXInitiated = true;
 			}
-			
+
 			if (rotXInitiated){
-				
+
 				// up-rotation
 				if (rotXamt < 0){
 					if (rotXcounter > rotXamt){
@@ -189,20 +188,22 @@ public class Camera {
 					else rotXInitiated = false;
 				}
 			}
-			
+
 			glfwSetCursorPos(Window.getInstance().getWindow(),
-					 Input.getInstance().getLockedCursorPosition().getX(),
-					 Input.getInstance().getLockedCursorPosition().getY());
+					Input.getInstance().getLockedCursorPosition().getX(),
+					Input.getInstance().getLockedCursorPosition().getY());
 		}
-		
+
 		if (!position.equals(previousPosition)){
-			cameraMoved = true;	
+			cameraMoved = true;
 		}
-		
+
 		if (!forward.equals(previousForward)){
 			cameraRotated = true;
 		}
+	}
 
+	public void update() {
 		viewMatrix = new Matrix4f().View(forward, up).mul(new Matrix4f().Translation(position.mul(-1)));
 		viewProjectionMatrix = projectionMatrix.mul(viewMatrix);
 		processPhysics(physics, speed);

@@ -63,7 +63,7 @@ public class CoreEngine {
 
 	public void run() {
 		this.isRunning = true;
-		update(0);
+		update();
 
 		long initialTime = System.currentTimeMillis();
 		float timeU = 1000.0f / targetUps;
@@ -88,13 +88,14 @@ public class CoreEngine {
 				Input.getInstance().update();
 				boolean inputConsumed = guiInstance.handleGuiInput();
 				if (!inputConsumed) {
-					Camera.getInstance().update();
+					Camera.getInstance().input();
 				}
 			}
 
+			update();
 			if (deltaUpdate >= 1) {
 				long diffTimeMillis = now - updateTime;
-				update(diffTimeMillis);
+				Camera.getInstance().update();
 				updateTime = now;
 				deltaUpdate--;
 			}
@@ -124,7 +125,7 @@ public class CoreEngine {
 		renderingEngine.render();
 	}
 	
-	private void update(long diffTimeMillis) {
+	private void update() {
 		renderingEngine.update();
 	}
 	
