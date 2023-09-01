@@ -20,4 +20,4 @@ Want to contribute code? Check the [issues page](https://github.com/ajh123-devel
 
 ## License
 
-This project is licensed under the EULA - see the [EULA](./EULA.md) file for details.
+This project is licensed under the EULA - see the [EULA](./LICENSE.md) file for details.
